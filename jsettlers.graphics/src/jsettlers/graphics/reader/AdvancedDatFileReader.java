@@ -52,7 +52,7 @@ import jsettlers.graphics.sequence.Sequence;
  * </tr>
  * <tr>
  * <td>Bytes 52 .. 55:</td>
- * <td>Unknown Pointer, seems not to be a sequence.</td>
+ * <td>Start position for Texts/Strings.</td>
  * </tr>
  * <tr>
  * <td>Bytes 56 .. 59:</td>
@@ -60,7 +60,7 @@ import jsettlers.graphics.sequence.Sequence;
  * </tr>
  * <tr>
  * <td>Bytes 60 .. 63:</td>
- * <td>Unneeded Pointer</td>
+ * <td>Start position for GUI graphics objects</td>
  * </tr>
  * <tr>
  * <td>Bytes 64 .. 67:</td>
@@ -72,15 +72,15 @@ import jsettlers.graphics.sequence.Sequence;
  * </tr>
  * <tr>
  * <td>Bytes 72 .. 75:</td>
- * <td>Position after above</td>
+ * <td>Shadow pointers</td>
  * </tr>
  * <tr>
  * <td>Bytes 76 .. 79:</td>
- * <td>Position after above</td>
+ * <td>Animation Sequences pointers</td>
  * </tr>
  * <tr>
  * <td>Bytes 80 .. 83:</td>
- * <td>Something, seems to be like 52..55</td>
+ * <td>Color Palettes pointers (for Torsos)</td>
  * </tr>
  * <tr>
  * <td>Bytes 84 .. 87:</td>
@@ -173,19 +173,31 @@ public class AdvancedDatFileReader implements DatFileSet {
 			0x00
 	};
 
-	static final int SEQUENCE_TYPE_COUNT = 6;
+	public enum EDataFileDataTypes
+	{
+		ID_SETTLERS (0x106),	
+		ID_TORSOS(0x3112),
+		ID_LANDSCAPE(0x2412),	
+		ID_SHADOWS(0x5982),
+		// fullscreen images
+		ID_GUIS (0x11306),
+		//- Strings
+		ID_TEXTS(0x1904),
+		//- color Paletts for Torsos
+		ID_COLOR_PALETTS(0x2607),
+		//- Animations Sequences
+		ID_ANIMATION_SEQUENCES(0x21702);
+		
+		public final int FileID;
+		public static final int length = EDataFileDataTypes.values().length;
+				
+		EDataFileDataTypes(int fileID)
+		{
+			FileID = fileID;
+		}
+	}
 
-	static final int ID_SETTLERS = 0x106;
-
-	static final int ID_TORSOS = 0x3112;
-
-	static final int ID_LANDSCAPE = 0x2412;
-
-	static final int ID_SHADOWS = 0x5982;
-
-	// fullscreen images
-	static final int ID_GUIS = 0x11306;
-
+	
 	private final DatBitmapTranslator<SettlerImage> settlerTranslator;
 
 	private final DatBitmapTranslator<Torso> torsoTranslator;
@@ -312,7 +324,7 @@ public class AdvancedDatFileReader implements DatFileSet {
 		int[] sequenceIndexStarts =
 				readSequenceIndexStarts(file.length(), reader);
 
-		for (int i = 0; i < SEQUENCE_TYPE_COUNT; i++) {
+		for (int i = 0; i < EDataFileDataTypes.length; i++) {
 			try {
 				readSequencesAt(reader, sequenceIndexStarts[i]);
 			} catch (IOException e) {
@@ -335,17 +347,14 @@ public class AdvancedDatFileReader implements DatFileSet {
 					"The length stored in the dat file is not the file length.");
 		}
 
-		// ignore unknown bytes.
-		reader.read32();
 
 		// read settler image pointer
-		int[] sequenceIndexStarts = new int[SEQUENCE_TYPE_COUNT];
-		for (int i = 0; i < SEQUENCE_TYPE_COUNT; i++) {
+		int[] sequenceIndexStarts = new int[EDataFileDataTypes.length];
+		for (int i = 0; i <  EDataFileDataTypes.length; i++) {
 			sequenceIndexStarts[i] = reader.read32();
 		}
 
 		// ignore unknown bytes.
-		reader.read32();
 		reader.assumeToRead(FILE_HEADER_END);
 		return sequenceIndexStarts;
 	}
@@ -371,32 +380,51 @@ public class AdvancedDatFileReader implements DatFileSet {
 
 		int sequenceType = reader.read32();
 
+		//- size of sequenceIndexPointers in Bytes
 		int byteCount = reader.read16();
+		
+		//- number of indexes in sequenceIndexPointers
 		int pointerCount = reader.read16();
 
-		if (byteCount != pointerCount * 4 + 8) {
+		int headerLength = 8;
+		
+		//- special cases for Texts & Paletts - they use a padding DWord
+		if (sequenceType == EDataFileDataTypes.ID_TEXTS.FileID) {
+			pointerCount = (byteCount - 12) / 4;
+			reader.read32(); //- unknown DWord
+			headerLength += 4;
+		}
+		
+		if (sequenceType == EDataFileDataTypes.ID_COLOR_PALETTS.FileID) {
+			reader.read32(); //- unknown DWord
+			headerLength += 4;
+		}
+		
+		
+		if (byteCount != pointerCount * 4 + headerLength) {
 			throw new IOException("Sequence index block length ("
 					+ pointerCount + ") and " + "bytecount (" + byteCount
 					+ ") are not consistent.");
 		}
+
 
 		int[] sequenceIndexPointers = new int[pointerCount];
 		for (int i = 0; i < pointerCount; i++) {
 			sequenceIndexPointers[i] = reader.read32();
 		}
 
-		if (sequenceType == ID_SETTLERS) {
+		if (sequenceType == EDataFileDataTypes.ID_SETTLERS.FileID) {
 			settlerstarts = sequenceIndexPointers;
-		} else if (sequenceType == ID_TORSOS) {
+		} else if (sequenceType == EDataFileDataTypes.ID_TORSOS.FileID) {
 			torsostarts = sequenceIndexPointers;
 
-		} else if (sequenceType == ID_LANDSCAPE) {
+		} else if (sequenceType == EDataFileDataTypes.ID_LANDSCAPE.FileID) {
 			landscapestarts = sequenceIndexPointers;
 
-		} else if (sequenceType == ID_SHADOWS) {
+		} else if (sequenceType == EDataFileDataTypes.ID_SHADOWS.FileID) {
 			shadowstarts = sequenceIndexPointers;
 
-		} else if (sequenceType == ID_GUIS) {
+		} else if (sequenceType == EDataFileDataTypes.ID_GUIS.FileID) {
 			guistarts = sequenceIndexPointers;
 		}
 	}
