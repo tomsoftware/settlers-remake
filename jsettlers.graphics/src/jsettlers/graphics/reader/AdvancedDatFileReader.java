@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import jsettlers.graphics.image.AnimationSequence;
 import jsettlers.graphics.image.GuiImage;
 import jsettlers.graphics.image.Image;
 import jsettlers.graphics.image.LandscapeImage;
@@ -105,6 +106,7 @@ import jsettlers.graphics.sequence.Sequence;
  * </table>
  * 
  * @author michael
+ * @author Thomas Zeugner
  */
 public class AdvancedDatFileReader implements DatFileSet {
 	/**
@@ -173,27 +175,35 @@ public class AdvancedDatFileReader implements DatFileSet {
 			0x00
 	};
 
-	public enum EDataFileDataTypes
-	{
-		ID_SETTLERS (0x106),	
-		ID_TORSOS(0x3112),
-		ID_LANDSCAPE(0x2412),	
-		ID_SHADOWS(0x5982),
+	public enum EDataFileDataTypes {
+		SETTLER (0x106),	
+		TORSO(0x3112),
+		LANDSCAPE(0x2412),	
+		SHADOW(0x5982),
 		// fullscreen images
-		ID_GUIS (0x11306),
+		GUI (0x11306),
 		//- Strings
-		ID_TEXTS(0x1904),
+		TEXT(0x1904),
 		//- color Paletts for Torsos
-		ID_COLOR_PALETTS(0x2607),
+		COLOR_PALETT(0x2607),
 		//- Animations Sequences
-		ID_ANIMATION_SEQUENCES(0x21702);
+		ANIMATION_SEQUENCE(0x21702);
 		
 		public final int FileID;
 		public static final int length = EDataFileDataTypes.values().length;
-				
-		EDataFileDataTypes(int fileID)
-		{
+		public final int index;
+		
+		EDataFileDataTypes(int fileID) {
 			FileID = fileID;
+			index = this.ordinal();
+		}
+		
+		public static EDataFileDataTypes FromSequenceType(int FileID) {
+			for (int i = 0; i < length; i++) {
+				if (EDataFileDataTypes.values()[i].FileID == FileID) return EDataFileDataTypes.values()[i];
+			}
+			
+			return null;
 		}
 	}
 
@@ -212,37 +222,30 @@ public class AdvancedDatFileReader implements DatFileSet {
 	private final File file;
 
 	/**
-	 * This is a list of file positions where the settler sequences start.
+	 * This is a list of file positions where Data/Images/Sequences/... start.
 	 */
-	private int[] settlerstarts;
+	private int[][] indexs = new int [EDataFileDataTypes.length][];
 
 	/**
 	 * A list of loaded settler sequences.
 	 */
 	private Sequence<Image>[] settlersequences = null;
+	
+	
+	private AnimationSequence[] animationSequence = null;
+	
 	/**
-	 * An array with the same length as settlers.
-	 */
-	private int[] torsostarts;
-	/**
-	 * An array with the same length as settlers.
-	 */
-	private int[] shadowstarts;
-
-	/**
-	 * A list of loaded landscae images.
+	 * A list of loaded landscape images.
 	 */
 	private LandscapeImage[] landscapeimages = null;
-	private final Sequence<LandscapeImage> landscapesequence =
-			new LandscapeImageSequence();
-	private int[] landscapestarts;
+	private final Sequence<LandscapeImage> landscapesequence = new LandscapeImageSequence();
 
 	private GuiImage[] guiimages = null;
-	private int[] guistarts;
 	private final Sequence<GuiImage> guisequence = new GuiImageSequence();
 
 	private final SequenceList<Image> directSettlerList;
 
+	
 	private static final byte[] START = new byte[] {
 			0x02, 0x14, 0x00, 0x00, 0x08, 0x00, 0x00
 	};
@@ -252,18 +255,16 @@ public class AdvancedDatFileReader implements DatFileSet {
 	public AdvancedDatFileReader(File file, DatFileType type) {
 		this.file = file;
 		this.type = type;
+		
 		directSettlerList = new DirectSettlerSequenceList();
 
-		settlerTranslator =
-				new SettlerTranslator(type);
-		torsoTranslator =
-				new TorsoTranslator();
-		landscapeTranslator =
-				new LandscapeTranslator(type);
-		shadowTranslator =
-				new ShadowTranslator();
-		guiTranslator =
-				new GuiTranslator(type);
+		initializeNullFile();
+		
+		settlerTranslator = new SettlerTranslator(type);
+		torsoTranslator = new TorsoTranslator();
+		landscapeTranslator = new LandscapeTranslator(type);
+		shadowTranslator = new ShadowTranslator();
+		guiTranslator = new GuiTranslator(type);
 	}
 
 	/**
@@ -288,35 +289,45 @@ public class AdvancedDatFileReader implements DatFileSet {
 		}
 		initializeNullFile();
 
-		landscapeimages = new LandscapeImage[landscapestarts.length];
-
-		guiimages = new GuiImage[guistarts.length];
-
-		settlersequences = new Sequence[settlerstarts.length];
-
-		int torsodifference = settlerstarts.length - torsostarts.length;
+		//- helper variables for the indexes
+		final int SettlerID = EDataFileDataTypes.SETTLER.index;
+		final int TorsoID = EDataFileDataTypes.TORSO.index;
+		final int ShadowID = EDataFileDataTypes.SHADOW.index;
+		final int LansscapeID = EDataFileDataTypes.LANDSCAPE.index;
+		final int GuiID = EDataFileDataTypes.GUI.index;
+		final int SequenceID = EDataFileDataTypes.ANIMATION_SEQUENCE.index;
+		
+		//- init Size of Images-Objects
+		guiimages = new GuiImage[indexs[GuiID].length];
+		landscapeimages = new LandscapeImage[indexs[LansscapeID].length];
+		settlersequences = new Sequence[indexs[SettlerID].length];
+		animationSequence = new AnimationSequence[indexs[SequenceID].length];
+		
+		
+		int torsodifference = indexs[SettlerID].length - indexs[TorsoID].length;
 		if (torsodifference != 0) {
-			int[] oldtorsos = torsostarts;
-			torsostarts = new int[settlerstarts.length];
+			int[] oldtorsos = indexs[TorsoID];
+			indexs[TorsoID] = new int[indexs[SettlerID].length];
 			for (int i = 0; i < oldtorsos.length; i++) {
-				torsostarts[i + torsodifference] = oldtorsos[i];
+				indexs[TorsoID][i + torsodifference] = oldtorsos[i];
 			}
 			for (int i = 0; i < torsodifference; i++) {
-				torsostarts[i] = -1;
+				indexs[TorsoID][i] = -1;
 			}
 		}
 
-		int shadowdifference = settlerstarts.length - shadowstarts.length;
-		if (shadowstarts.length < settlerstarts.length) {
-			int[] oldshadows = shadowstarts;
-			shadowstarts = new int[settlerstarts.length];
+		int shadowdifference = indexs[SettlerID].length - indexs[ShadowID].length;
+		if (shadowdifference > 0) {
+			int[] oldshadows = indexs[ShadowID];
+			indexs[ShadowID] = new int[indexs[SettlerID].length];
 			for (int i = 0; i < oldshadows.length; i++) {
-				shadowstarts[i + shadowdifference] = oldshadows[i];
+				indexs[ShadowID][i + shadowdifference] = oldshadows[i];
 			}
 			for (int i = 0; i < shadowdifference; i++) {
-				torsostarts[i] = -1;
+				indexs[ShadowID][i] = -1;
 			}
 		}
+		
 	}
 
 	private void initFromReader(File file, ByteReader reader)
@@ -324,6 +335,7 @@ public class AdvancedDatFileReader implements DatFileSet {
 		int[] sequenceIndexStarts =
 				readSequenceIndexStarts(file.length(), reader);
 
+		//- read all resources
 		for (int i = 0; i < EDataFileDataTypes.length; i++) {
 			try {
 				readSequencesAt(reader, sequenceIndexStarts[i]);
@@ -389,17 +401,17 @@ public class AdvancedDatFileReader implements DatFileSet {
 		int headerLength = 8;
 		
 		//- special cases for Texts & Paletts - they use a padding DWord
-		if (sequenceType == EDataFileDataTypes.ID_TEXTS.FileID) {
+		if (sequenceType == EDataFileDataTypes.TEXT.FileID) {
+			//- the count for Text is 0... don't know why. 
 			pointerCount = (byteCount - 12) / 4;
 			reader.read32(); //- unknown DWord
 			headerLength += 4;
 		}
 		
-		if (sequenceType == EDataFileDataTypes.ID_COLOR_PALETTS.FileID) {
+		if (sequenceType == EDataFileDataTypes.COLOR_PALETT.FileID) {
 			reader.read32(); //- unknown DWord
 			headerLength += 4;
 		}
-		
 		
 		if (byteCount != pointerCount * 4 + headerLength) {
 			throw new IOException("Sequence index block length ("
@@ -413,37 +425,17 @@ public class AdvancedDatFileReader implements DatFileSet {
 			sequenceIndexPointers[i] = reader.read32();
 		}
 
-		if (sequenceType == EDataFileDataTypes.ID_SETTLERS.FileID) {
-			settlerstarts = sequenceIndexPointers;
-		} else if (sequenceType == EDataFileDataTypes.ID_TORSOS.FileID) {
-			torsostarts = sequenceIndexPointers;
-
-		} else if (sequenceType == EDataFileDataTypes.ID_LANDSCAPE.FileID) {
-			landscapestarts = sequenceIndexPointers;
-
-		} else if (sequenceType == EDataFileDataTypes.ID_SHADOWS.FileID) {
-			shadowstarts = sequenceIndexPointers;
-
-		} else if (sequenceType == EDataFileDataTypes.ID_GUIS.FileID) {
-			guistarts = sequenceIndexPointers;
-		}
+		//- save Indexes to 
+		EDataFileDataTypes TypeInfo = EDataFileDataTypes.FromSequenceType(sequenceType);
+		indexs[TypeInfo.index] = sequenceIndexPointers;
+		
 	}
 
 	private void initializeNullFile() {
-		if (settlerstarts == null) {
-			settlerstarts = new int[0];
-		}
-		if (torsostarts == null) {
-			torsostarts = new int[0];
-		}
-		if (shadowstarts == null) {
-			shadowstarts = new int[0];
-		}
-		if (landscapestarts == null) {
-			landscapestarts = new int[0];
-		}
-		if (guistarts == null) {
-			guistarts = new int[0];
+		for (int i = 0; i < EDataFileDataTypes.length; i++) {
+			if (indexs[i] == null) {
+				indexs[i] = new int[0];
+			}
 		}
 	}
 
@@ -485,25 +477,43 @@ public class AdvancedDatFileReader implements DatFileSet {
 		}
 	}
 
+	private synchronized void loadAnimationSequences(int index) throws IOException {
+		
+		int position = indexs[EDataFileDataTypes.ANIMATION_SEQUENCE.index][index];
+		reader.skipTo(position);
+		
+		int count = reader.read32();
+		
+		animationSequence[index] = new AnimationSequence(count);
+		
+		for (int i = 0; i < count; i++) {
+			animationSequence[index].set(i, reader);
+		}
+		
+	}
+	
 	private synchronized void loadSettlers(int index) throws IOException {
 
-		int position = settlerstarts[index];
+		int position = indexs[EDataFileDataTypes.SETTLER.index][index];
 		long[] framePositions = readSequenceHeader(position);
 
 		SettlerImage[] images = new SettlerImage[framePositions.length];
+		
 		for (int i = 0; i < framePositions.length; i++) {
 			reader.skipTo(framePositions[i]);
 			images[i] = DatBitmapReader.getImage(settlerTranslator, reader);
 		}
-
-		int torsoposition = torsostarts[index];
+		
+		int indexTorso = index;
+		int torsoposition = indexs[EDataFileDataTypes.TORSO.index][indexTorso];
 		if (torsoposition >= 0) {
 			long[] torsoPositions = readSequenceHeader(torsoposition);
-			for (int i = 0; i < torsoPositions.length
+			
+			for (int i = 0; i < torsoPositions.length 
 					&& i < framePositions.length; i++) {
+				
 				reader.skipTo(torsoPositions[i]);
-				Torso torso =
-						DatBitmapReader.getImage(torsoTranslator, reader);
+				Torso torso = DatBitmapReader.getImage(torsoTranslator, reader);
 				images[i].setTorso(torso);
 			}
 		}
@@ -574,13 +584,13 @@ public class AdvancedDatFileReader implements DatFileSet {
 
 	public ByteReader getReaderForLandscape(int index) throws IOException {
 		initializeIfNeeded();
-		reader.skipTo(landscapestarts[index]);
+		reader.skipTo(indexs[EDataFileDataTypes.LANDSCAPE.index][index]);
 		return reader;
 	}
 
 	private void loadLandscapeImage(int index) {
 		try {
-			reader.skipTo(landscapestarts[index]);
+			reader.skipTo(indexs[EDataFileDataTypes.LANDSCAPE.index][index]);
 			LandscapeImage image =
 					DatBitmapReader.getImage(landscapeTranslator, reader);
 			landscapeimages[index] = image;
@@ -629,7 +639,7 @@ public class AdvancedDatFileReader implements DatFileSet {
 
 	private void loadGuiImage(int index) {
 		try {
-			reader.skipTo(guistarts[index]);
+			reader.skipTo(indexs[EDataFileDataTypes.GUI.index][index]);
 			GuiImage image = DatBitmapReader.getImage(guiTranslator, reader);
 			guiimages[index] = image;
 		} catch (IOException e) {
@@ -639,12 +649,12 @@ public class AdvancedDatFileReader implements DatFileSet {
 
 	public long[] getSettlerPointers(int seqindex) throws IOException {
 		initializeIfNeeded();
-		return readSequenceHeader(settlerstarts[seqindex]);
+		return readSequenceHeader(indexs[EDataFileDataTypes.SETTLER.index][seqindex]);
 	}
 
 	public long[] getTorsoPointers(int seqindex) throws IOException {
 		initializeIfNeeded();
-		int position = torsostarts[seqindex];
+		int position = indexs[EDataFileDataTypes.TORSO.index][seqindex];
 		if (position >= 0) {
 			return readSequenceHeader(position);
 		} else {
