@@ -105,6 +105,61 @@ import jsettlers.graphics.sequence.Sequence;
  * </tr>
  * </table>
  * 
+ * GFX Files:
+ * Siedler3_00.f8007e01f.dat	Landscape
+ * Siedler3_01.f8007e01f.dat	objects / stacks / color palettes
+ * Siedler3_02.f8007e01f.dat	menu gui
+ * Siedler3_03.f8007e01f.dat	in game gui buttons
+ * Siedler3_04.f8007e01f.dat	in game gui
+ * Siedler3_05.f8007e01f.dat	(empty)
+ * Siedler3_06.f8007e01f.dat	resources
+ * Siedler3_07.f8007e01f.dat	Text / Strings (in Game)
+ * Siedler3_08.f8007e01f.dat	Text / Strings (Mission)
+ * Siedler3_09.f8007e01f.dat	Text / Strings (out of: e.g. main menu)
+ *
+ * Siedler3_10.f8007e01f.dat	Roman bearers
+ * Siedler3_11.f8007e01f.dat	Roman workers
+ * Siedler3_12.f8007e01f.dat	Roman warriors
+ * Siedler3_13.f8007e01f.dat	Roman buildings
+ * Siedler3_14.f8007e01f.dat	Roman gdi
+ * Siedler3_15.f8007e01f.dat	Roman animation sequences
+ * Siedler3_16.f8007e01f.dat	(empty)
+ * Siedler3_17.f8007e01f.dat	(empty)
+ * Siedler3_18.f8007e01f.dat	(windows dll?)
+ *
+ * Siedler3_20.f8007e01f.dat	Egyptian bearerr
+ * Siedler3_21.f8007e01f.dat	Egyptian worker
+ * Siedler3_22.f8007e01f.dat	Egyptian warriors
+ * Siedler3_23.f8007e01f.dat	Egyptian buildings
+ * Siedler3_24.f8007e01f.dat	Egyptian gui
+ * Siedler3_25.f8007e01f.dat	Egyptian animation sequences
+ * Siedler3_26.f8007e01f.dat	(empty)
+ * Siedler3_27.f8007e01f.dat	(empty)
+ *
+ * Siedler3_30.f8007e01f.dat	Asians bearerr
+ * Siedler3_31.f8007e01f.dat	Asians worker
+ * Siedler3_32.f8007e01f.dat	Asians warriors
+ * Siedler3_33.f8007e01f.dat	Asians buildings
+ * Siedler3_34.f8007e01f.dat	Asians gui
+ * Siedler3_35.f8007e01f.dat	Asians animation sequences
+ * Siedler3_36.f8007e01f.dat	Asians ships
+ * Siedler3_37.f8007e01f.dat	(empty)
+ * 
+ * Siedler3_40.f8007e01f.dat	Amazon bearerr
+ * Siedler3_41.f8007e01f.dat	Amazon worker
+ * Siedler3_42.f8007e01f.dat	Amazon warriors
+ * Siedler3_43.f8007e01f.dat	Amazon buildings
+ * Siedler3_44.f8007e01f.dat	Amazon gui
+ * Siedler3_45.f8007e01f.dat	Amazon animation sequences
+ * Siedler3_46.f8007e01f.dat	Amazon ships
+ * Siedler3_47.f8007e01f.dat	(empty)
+ * 
+ * Siedler3_48.f8007e01f.dat	mission map-images (Amazon)
+ * Siedler3_60.f8007e01f.dat	mission map-images
+ * 
+ * Siedler3_61.f8007e01f.dat	Settler Logos
+ * 
+ *
  * @author michael
  * @author Thomas Zeugner
  */
