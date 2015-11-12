@@ -58,7 +58,12 @@ public final class ConstructionMarkObject extends AbstractHexMapObject {
 	public boolean canBeCut() {
 		return false;
 	}
-
+	
+	@Override
+	public int getObjectStyle() {
+		return 0;
+	}
+	
 	public void setConstructionValue(byte constructionValue) {
 		assert constructionValue >= 0 : "construction value must be >= 0";
 		this.constructionValue = ((float) constructionValue) / Byte.MAX_VALUE;

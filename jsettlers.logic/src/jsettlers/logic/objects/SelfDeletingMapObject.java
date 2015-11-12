@@ -78,4 +78,9 @@ public class SelfDeletingMapObject extends ProgressingObject implements IPlayera
 	protected void changeState() {
 		throw new UnsupportedOperationException();
 	}
+	
+	@Override
+	public int getObjectStyle() {
+		return 0;
+	}
 }

@@ -66,15 +66,19 @@ public class MapObjectDrawer {
 	private static final int OBJECTS_FILE = 1;
 	private static final int BUILDINGS_FILE = 13;
 
-	private static final int TREE_TYPES = 7;
-
+	
+	//- adult tree object sequences
 	private static final int[] TREE_SEQUENCES = new int[] {
 			1, 2, 4, 7, 8, 16, 17,
 	};
+	
+	//- cutting down tree object sequences
 	private static final int[] TREE_CHANGING_SEQUENCES = new int[] {
 			3, 3, 6, 9, 9, 18, 18,
 	};
-
+	
+	public static final int TREE_TYPES = TREE_SEQUENCES.length;
+	
 	/**
 	 * First images in tree cutting sequence
 	 */
@@ -190,7 +194,7 @@ public class MapObjectDrawer {
 
 			case TREE_ADULT:
 				if (context.ENABLE_ORIGINAL) {
-					drawTree(x, y, color);
+					drawTree(x, y, object, color);
 				} else {
 					drawTreeTest(x, y, color);
 				}
@@ -199,19 +203,21 @@ public class MapObjectDrawer {
 			case TREE_DEAD:
 				// TODO: falling tree sound.
 				playSound(object, 4);
-				drawFallingTree(x, y, progress, color);
+				drawFallingTree(x, y, object, progress, color);
 				break;
 
 			case TREE_GROWING:
-				drawGrowingTree(x, y, progress, color);
+				drawGrowingTree(x, y, object, progress, color);
 				break;
 
 			case CORN_GROWING:
 				drawGrowingCorn(x, y, object, color);
 				break;
+				
 			case CORN_ADULT:
 				drawCorn(x, y, color);
 				break;
+				
 			case CORN_DEAD:
 				drawDeadCorn(x, y, color);
 				break;
@@ -673,7 +679,7 @@ public class MapObjectDrawer {
 		draw(seq.getImageSafe(step), x, y, color);
 	}
 
-	private void drawGrowingTree(int x, int y, float progress, float color) {
+	private void drawGrowingTree(int x, int y, IMapObject object, float progress, float color) {
 		Image image;
 		if (progress < 0.33) {
 			Sequence<? extends Image> seq =
@@ -681,7 +687,7 @@ public class MapObjectDrawer {
 							SMALL_GROWING_TREE);
 			image = seq.getImageSafe(0);
 		} else {
-			int treeType = getTreeType(x, y);
+			int treeType = object.getObjectStyle();
 			Sequence<? extends Image> seq =
 					this.imageProvider.getSettlerSequence(OBJECTS_FILE,
 							TREE_CHANGING_SEQUENCES[treeType]);
@@ -694,8 +700,8 @@ public class MapObjectDrawer {
 		draw(image, x, y, color);
 	}
 
-	private void drawFallingTree(int x, int y, float progress, float color) {
-		int treeType = getTreeType(x, y);
+	private void drawFallingTree(int x, int y, IMapObject object, float progress, float color) {
+		int treeType = object.getObjectStyle();
 		int imageStep = 0;
 
 		if (progress < IMapObject.TREE_CUT_1) {
@@ -726,8 +732,8 @@ public class MapObjectDrawer {
 		draw(seq.getImageSafe(imageStep), x, y, color);
 	}
 
-	private void drawTree(int x, int y, float color) {
-		int treeType = getTreeType(x, y);
+	private void drawTree(int x, int y, IMapObject object, float color) {
+		int treeType = object.getObjectStyle();
 		Sequence<? extends Image> seq =
 				this.imageProvider.getSettlerSequence(OBJECTS_FILE,
 						TREE_SEQUENCES[treeType]);
@@ -770,10 +776,6 @@ public class MapObjectDrawer {
 
 		draw(imageProvider.getSettlerSequence(FILE_BORDERPOST, 65)
 				.getImageSafe(0), x, y, color, base);
-	}
-
-	private static int getTreeType(int x, int y) {
-		return (x + x / 5 + y / 3 + y + y / 7) % TREE_TYPES;
 	}
 
 	private int getAnimationStep(int x, int y) {

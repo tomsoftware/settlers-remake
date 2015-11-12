@@ -64,4 +64,10 @@ public interface IMapObject {
 	 * @return The first {@link IMapObject} found on this stack or <code>null</code> if none of this type has been found.
 	 */
 	IMapObject getMapObject(EMapObjectType type);
+	
+	
+	/**
+	 * Returns the Style / Image for this object e.g. the Tree type
+	 */ 
+	int getObjectStyle();
 }

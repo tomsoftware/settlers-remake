@@ -30,8 +30,8 @@ public final class AdultTree extends Tree {
 	 * 
 	 * @param grid
 	 */
-	public AdultTree(ShortPoint2D pos) {
-		super(pos);
+	public AdultTree(ShortPoint2D pos, Tree.ETreeTypes treeType) {
+		super(pos, treeType);
 		super.changeState();
 	}
 

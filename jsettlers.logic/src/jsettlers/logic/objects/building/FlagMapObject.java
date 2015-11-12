@@ -61,4 +61,9 @@ public final class FlagMapObject extends AbstractHexMapObject implements IPlayer
 		return player;
 	}
 
+	@Override
+	public int getObjectStyle() {
+		return 0;
+	}
+	
 }

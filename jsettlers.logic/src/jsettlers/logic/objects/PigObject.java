@@ -57,4 +57,8 @@ public class PigObject extends AbstractHexMapObject {
 		return (MatchConstants.clock.getTime() - starttime) > LIVE_TIME;
 	}
 
+	@Override
+	public int getObjectStyle() {
+		return 0;
+	}
 }

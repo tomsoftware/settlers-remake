@@ -106,7 +106,8 @@ public final class MapObjectsManager implements IScheduledTimerable, Serializabl
 	public boolean executeSearchType(ShortPoint2D pos, ESearchType type) {
 		switch (type) {
 		case PLANTABLE_TREE:
-			return plantTree(new ShortPoint2D(pos.x, pos.y + 1));
+			return plantTree(new ShortPoint2D(pos.x, pos.y + 1), Tree.ETreeTypes.NOT_DEFINED);
+			
 		case CUTTABLE_TREE:
 			return cutTree(pos);
 
@@ -116,11 +117,13 @@ public final class MapObjectsManager implements IScheduledTimerable, Serializabl
 
 		case PLANTABLE_CORN:
 			return plantCorn(pos);
+			
 		case CUTTABLE_CORN:
 			return cutCorn(pos);
 
 		case PLANTABLE_WINE:
 			return plantWine(pos);
+			
 		case HARVESTABLE_WINE:
 			return harvestWine(pos);
 
@@ -160,8 +163,8 @@ public final class MapObjectsManager implements IScheduledTimerable, Serializabl
 		}
 	}
 
-	private boolean plantTree(ShortPoint2D pos) {
-		Tree tree = new Tree(pos);
+	private boolean plantTree(ShortPoint2D pos, Tree.ETreeTypes treeType) {
+		Tree tree = new Tree(pos, treeType);
 		addMapObject(pos, tree);
 		schedule(tree, Tree.GROWTH_DURATION, false);
 		return true;
@@ -258,8 +261,8 @@ public final class MapObjectsManager implements IScheduledTimerable, Serializabl
 		addMapObject(pos, new Stone(capacity));
 	}
 
-	public void plantAdultTree(ShortPoint2D pos) {
-		addMapObject(pos, new AdultTree(pos));
+	public void plantAdultTree(ShortPoint2D pos, Tree.ETreeTypes treeType) {
+		addMapObject(pos, new AdultTree(pos, treeType));
 	}
 
 	/**

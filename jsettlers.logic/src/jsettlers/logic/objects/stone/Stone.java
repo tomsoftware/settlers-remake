@@ -71,4 +71,9 @@ public class Stone extends AbstractHexMapObject {
 		return leftCapacity > 0;
 	}
 
+	@Override
+	public int getObjectStyle() {
+		return 0;
+	}
+
 }

@@ -116,4 +116,10 @@ public class TestBuilding implements IBuilding {
 	public boolean cannotWork() {
 		return false;
 	}
+	
+	@Override
+	public int getObjectStyle() {
+		return 0;
+	}
+
 }

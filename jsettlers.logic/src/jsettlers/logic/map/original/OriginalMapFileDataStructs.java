@@ -22,6 +22,7 @@ import jsettlers.common.buildings.EBuildingType;
 import jsettlers.common.material.EMaterialType;
 import jsettlers.common.movable.EMovableType;
 import jsettlers.logic.map.original.OriginalMapFileDataStructs.EMapNations;
+import jsettlers.logic.objects.growing.tree.Tree;
 
 import java.util.List;
 import java.util.Vector;
@@ -844,23 +845,23 @@ public class OriginalMapFileDataStructs {
 		UNKNOWN_41(null, 0),  //- GAME_OBJECT_REED_BEDS_4 = 65,
 		UNKNOWN_42(null, 0),  //- GAME_OBJECT_REED_BEDS_5 = 66,
 		UNKNOWN_43(null, 0),  //- GAME_OBJEC()T_REED_BEDS_6 = 67,
-		TREE_BIRCH_1(EMapObjectTypeType.TREE, 0),  //- GAME_OBJECT_TREE_BIRCH_1 = 68,
-		TREE_BIRCH_2(EMapObjectTypeType.TREE, 0),  //- GAME_OBJECT_TREE_BIRCH_2 = 69,
-		TREE_ELM_1(EMapObjectTypeType.TREE, 0),  //- GAME_OBJECT_TREE_ELM_1 = 70,
-		TREE_ELM_2(EMapObjectTypeType.TREE, 0),  //- GAME_OBJECT_TREE_ELM_2 = 71,
-		TREE_OAK_1(EMapObjectTypeType.TREE, 0),  //- GAME_OBJECT_TREE_OAK_1 = 72,
-		TREE_UNKNOWN_1(EMapObjectTypeType.TREE, 0),  //- GAME_OBJECT_TREE_UNKNOWN_1 = 73,
-		TREE_UNKNOWN_2(EMapObjectTypeType.TREE, 0),  //- GAME_OBJECT_TREE_UNKNOWN_2 = 74,
-		TREE_UNKNOWN_3(EMapObjectTypeType.TREE, 0),  //- GAME_OBJECT_TREE_UNKNOWN_3 = 75,
-		TREE_UNKNOWN_4(EMapObjectTypeType.TREE, 0),  //- GAME_OBJECT_TREE_UNKNOWN_4 = 76,
-		TREE_UNKNOWN_5(EMapObjectTypeType.TREE, 0),  //- //-- unknown: 77
-		TREE_ARECACEAE_1(EMapObjectTypeType.TREE, 0),  //- GAME_OBJECT_TREE_ARECACEAE_1 = 78,
-		TREE_ARECACEAE_2(EMapObjectTypeType.TREE, 0),  //- GAME_OBJECT_TREE_ARECACEAE_2 = 79,
-		TREE_UNKNOWN_6(EMapObjectTypeType.TREE, 0),  //- GAME_OBJECT_TREE_UNKNOWN_6 = 80,
+		TREE_BIRCH_1(EMapObjectTypeType.TREE, Tree.ETreeTypes.BIRCH_1),  //- GAME_OBJECT_TREE_BIRCH_1 = 68,
+		TREE_BIRCH_2(EMapObjectTypeType.TREE, Tree.ETreeTypes.BIRCH_2),  //- GAME_OBJECT_TREE_BIRCH_2 = 69,
+		TREE_ELM_1(EMapObjectTypeType.TREE, Tree.ETreeTypes.ELM_1),  //- GAME_OBJECT_TREE_ELM_1 = 70,
+		TREE_ELM_2(EMapObjectTypeType.TREE, Tree.ETreeTypes.ELM_2),  //- GAME_OBJECT_TREE_ELM_2 = 71,
+		TREE_OAK_1(EMapObjectTypeType.TREE, Tree.ETreeTypes.OAK_1),  //- GAME_OBJECT_TREE_OAK_1 = 72,
+		TREE_UNKNOWN_1(EMapObjectTypeType.TREE, Tree.ETreeTypes.ELM_2),  //- GAME_OBJECT_TREE_UNKNOWN_1 = 73,
+		TREE_UNKNOWN_2(EMapObjectTypeType.TREE, Tree.ETreeTypes.BIRCH_1),  //- GAME_OBJECT_TREE_UNKNOWN_2 = 74,
+		TREE_UNKNOWN_3(EMapObjectTypeType.TREE, Tree.ETreeTypes.BIRCH_1),  //- GAME_OBJECT_TREE_UNKNOWN_3 = 75,
+		TREE_UNKNOWN_4(EMapObjectTypeType.TREE, Tree.ETreeTypes.BIRCH_1),  //- GAME_OBJECT_TREE_UNKNOWN_4 = 76,
+		TREE_UNKNOWN_5(EMapObjectTypeType.TREE, Tree.ETreeTypes.BIRCH_1),  //- //-- unknown: 77
+		TREE_ARECACEAE_1(EMapObjectTypeType.TREE, Tree.ETreeTypes.ARECACEAE_1),  //- GAME_OBJECT_TREE_ARECACEAE_1 = 78,
+		TREE_ARECACEAE_2(EMapObjectTypeType.TREE, Tree.ETreeTypes.ARECACEAE_2),  //- GAME_OBJECT_TREE_ARECACEAE_2 = 79,
+		TREE_UNKNOWN_6(EMapObjectTypeType.TREE, Tree.ETreeTypes.BIRCH_1),  //- GAME_OBJECT_TREE_UNKNOWN_6 = 80,
 		UNKNOWN_51(null, 0),  //- //-- unknown: 81
 		UNKNOWN_52(null, 0),  //- //-- unknown: 82
 		UNKNOWN_53(null, 0),  //- //-- unknown: 83
-		UNKNOWN_54(EMapObjectTypeType.TREE, 0),  //- GAME_OBJECT_TREE_SMALL = 84,
+		SMALL_TREE(EMapObjectTypeType.TREE, Tree.ETreeTypes.SMALL),  //- GAME_OBJECT_TREE_SMALL = 84,
 		UNKNOWN_55(null, 0),  //- //-- unknown...
 		UNKNOWN_56(null, 0),  //- //-- unknown...
 		UNKNOWN_57(null, 0),  //- //-- unknown...
@@ -917,6 +918,11 @@ public class OriginalMapFileDataStructs {
 			this.style = style;
 		}
 		
+		EObjectType(EMapObjectTypeType type, Tree.ETreeTypes style) {
+			this.type = type;
+			this.style = style.ordinal();
+		}
+		
 		EObjectType(EMapObjectTypeType type, EMapObjectType style) {
 			this.type = type;
 			this.style = style.ordinal();
@@ -946,7 +952,8 @@ public class OriginalMapFileDataStructs {
 					return MapStoneObject.getInstance(style);
 					
 				case TREE:
-					return MapTreeObject.getInstance();
+					return MapTreeObject.getInstance(style);
+	
 					
 				default:
 					return null;

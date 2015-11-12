@@ -16,8 +16,22 @@ package jsettlers.common.map.object;
 
 public class MapTreeObject implements MapObject {
 
+	private int treeStyle;
+	
 	public static MapTreeObject getInstance() {
-		return new MapTreeObject();
+		return new MapTreeObject(-1);
 	}
-
+	
+	public static MapTreeObject getInstance(/*Tree.ETreeTypes*/ int treeStyle) {
+		return new MapTreeObject(treeStyle);
+	}
+	
+	public MapTreeObject(/*Tree.ETreeTypes*/ int treeStyle) {
+		this.treeStyle = treeStyle;
+	}
+	
+	public int getStyle() {
+		return treeStyle;
+	}
+	
 }

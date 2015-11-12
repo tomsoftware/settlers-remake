@@ -62,6 +62,11 @@ public final class RessourceSignMapObject extends AbstractObjectsManagerObject {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public int getObjectStyle() {
+		return 0;
+	}
+	
 	public static final float getLivetime() {
 		return RandomSingleton.nextF() * MAX_RANDOM_LIVETIME + MINIMUM_LIVETIME;
 	}

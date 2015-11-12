@@ -705,4 +705,10 @@ public abstract class Building extends AbstractHexMapObject implements IConstruc
 	public boolean cannotWork() {
 		return false;
 	}
+	
+	@Override
+	public int getObjectStyle() {
+		return 0;
+	}
+
 }

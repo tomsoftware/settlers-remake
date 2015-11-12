@@ -105,4 +105,8 @@ public final class StackMapObject extends AbstractHexMapObject implements IStack
 		return false;
 	}
 
+	@Override
+	public int getObjectStyle() {
+		return 0;
+	}
 }

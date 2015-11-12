@@ -33,5 +33,11 @@ public class WineBowlMapObject extends AbstractHexMapObject {
 	public boolean canBeCut() {
 		return false;
 	}
+	
+	@Override
+	public int getObjectStyle() {
+		return 0;
+	}
+
 
 }

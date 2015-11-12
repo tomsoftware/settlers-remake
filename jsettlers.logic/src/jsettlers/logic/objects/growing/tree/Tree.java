@@ -18,6 +18,8 @@ import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.position.ShortPoint2D;
 import jsettlers.common.position.RelativePoint;
 import jsettlers.common.sound.ISoundable;
+import jsettlers.graphics.map.draw.MapObjectDrawer;
+import jsettlers.logic.map.original.OriginalMapFileDataStructs.EMapObjectTypeType;
 import jsettlers.logic.objects.growing.GrowingObject;
 
 /**
@@ -36,15 +38,63 @@ public class Tree extends GrowingObject implements ISoundable {
 
 	private boolean soundPlayed;
 
+	public enum ETreeTypes {
+		ELM_1(0, true),
+		ELM_2(1, true),
+		OAK_1(2, true),
+		BIRCH_1(3, true),
+		BIRCH_2(4, true),
+		ARECACEAE_1(5, true),
+		ARECACEAE_2(6, true),
+		 
+		SMALL(0, false),
+		 
+		NOT_DEFINED(0, true);
+		
+		public boolean isAdult;
+		public int style;
+		
+		ETreeTypes(int style, boolean isAdult) {
+			this.isAdult = isAdult;
+			this.style = style;
+		}
+		
+		public EMapObjectType getEMapObjectType() {
+			if (isAdult) return EMapObjectType.TREE_GROWING;
+			return EMapObjectType.TREE_ADULT;
+		}
+		
+		static public ETreeTypes fromInt(int treeStyle) {
+			if ((treeStyle < 0) || (treeStyle >= ETreeTypes.values().length))
+				return ETreeTypes.NOT_DEFINED;
+			
+			return ETreeTypes.values()[treeStyle];
+		}
+	}
+	
+	//- save some memory and only use byte and not int
+	private byte treeTypeStyle; //- this value is ETreeTypes.ordinal();
+	
 	/**
 	 * Creates a new Tree.
 	 * 
 	 * @param grid
 	 */
-	public Tree(ShortPoint2D pos) {
-		super(pos, EMapObjectType.TREE_GROWING);
+	public Tree(ShortPoint2D pos, ETreeTypes treeStyle) {
+		super(pos, treeStyle.getEMapObjectType()); // TODO : Sound is played?!
+		
+		if (treeStyle != ETreeTypes.NOT_DEFINED) {
+			treeTypeStyle = (byte)treeStyle.style;
+		}
+		else {
+			short x = pos.x;
+			short y = pos.y;
+			
+			treeTypeStyle = (byte)((x + x / 5 + y / 3 + y + y / 7) % MapObjectDrawer.TREE_TYPES);
+		}
 	}
-
+	
+	
 	@Override
 	public RelativePoint[] getBlockedTiles() {
 		return BLOCKED;
@@ -78,5 +128,10 @@ public class Tree extends GrowingObject implements ISoundable {
 	@Override
 	protected EMapObjectType getAdultState() {
 		return EMapObjectType.TREE_ADULT;
+	}
+	
+	@Override
+	public int getObjectStyle() {
+		return treeTypeStyle;
 	}
 }

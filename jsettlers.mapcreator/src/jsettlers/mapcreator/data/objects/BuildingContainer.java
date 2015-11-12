@@ -169,4 +169,9 @@ public class BuildingContainer implements ObjectContainer, IBuilding, LandscapeC
 	public boolean cannotWork() {
 		return false;
 	}
+	
+	@Override
+	public int getObjectStyle() {
+		return 0;
+	}
 }

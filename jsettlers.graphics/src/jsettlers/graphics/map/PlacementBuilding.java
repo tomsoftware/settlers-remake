@@ -105,4 +105,9 @@ public class PlacementBuilding implements IBuilding, IBuilding.IMill {
 	public boolean cannotWork() {
 		return false;
 	}
+	
+	@Override
+	public int getObjectStyle() {
+		return 0;
+	}
 }

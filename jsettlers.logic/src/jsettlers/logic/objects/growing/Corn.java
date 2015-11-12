@@ -81,6 +81,11 @@ public final class Corn extends GrowingObject {
 		}
 	}
 
+	@Override
+	public int getObjectStyle() {
+		return 0;
+	}
+	
 	private void makePositionGrassIfPossible(int x, int y, MapObjectsManager mapObjectsManager, IMapObjectsManagerGrid grid) {
 		for (ShortPoint2D pos : getEarthArea(x, y)) {
 			if (grid.hasMapObjectType(pos.x, pos.y, EMapObjectType.CORN_GROWING, EMapObjectType.CORN_ADULT, EMapObjectType.CORN_DEAD)) {

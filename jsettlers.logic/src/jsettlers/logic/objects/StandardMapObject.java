@@ -60,4 +60,10 @@ public class StandardMapObject extends AbstractHexMapObject implements IPlayerab
 	public byte getPlayerId() {
 		return player;
 	}
+	
+	@Override
+	public int getObjectStyle() {
+		return 0;
+	}
+
 }

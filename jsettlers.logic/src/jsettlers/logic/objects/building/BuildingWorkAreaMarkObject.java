@@ -57,4 +57,8 @@ public final class BuildingWorkAreaMarkObject extends AbstractHexMapObject {
 		return progress;
 	}
 
+	@Override
+	public int getObjectStyle() {
+		return 0;
+	}
 }

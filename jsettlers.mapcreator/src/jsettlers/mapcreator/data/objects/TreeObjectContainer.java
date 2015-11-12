@@ -33,7 +33,7 @@ public class TreeObjectContainer implements ObjectContainer, IMapObject {
 
 	@Override
 	public EMapObjectType getObjectType() {
-		return EMapObjectType.TREE_ADULT;
+		return EMapObjectType.TREE_GROWING_AAA;
 	}
 
 	@Override
@@ -62,5 +62,10 @@ public class TreeObjectContainer implements ObjectContainer, IMapObject {
 	@Override
 	public IMapObject getMapObject(EMapObjectType type) {
 		return type == getObjectType() ? this : null;
+	}
+	
+	@Override
+	public int getObjectStyle() {
+		return 0;
 	}
 }

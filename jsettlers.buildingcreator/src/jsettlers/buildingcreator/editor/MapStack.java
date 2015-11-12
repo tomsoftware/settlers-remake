@@ -58,5 +58,10 @@ public class MapStack implements IStackMapObject {
 	public IMapObject getMapObject(EMapObjectType type) {
 		return type == getObjectType() ? this : null;
 	}
+	
+	@Override
+	public int getObjectStyle() {
+		return 0;
+	}
 
 }

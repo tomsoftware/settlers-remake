@@ -58,4 +58,8 @@ public class InformableMapObject extends AbstractHexMapObject implements IInform
 		this.informable.informAboutAttackable(attackable);
 	}
 
+	@Override
+	public int getObjectStyle() {
+		return 0;
+	}
 }

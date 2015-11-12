@@ -107,6 +107,7 @@ import jsettlers.logic.movable.Movable;
 import jsettlers.logic.movable.interfaces.AbstractMovableGrid;
 import jsettlers.logic.movable.interfaces.IAttackable;
 import jsettlers.logic.objects.arrow.ArrowObject;
+import jsettlers.logic.objects.growing.tree.Tree;
 import jsettlers.logic.objects.stack.StackMapObject;
 import jsettlers.logic.player.Player;
 import jsettlers.logic.player.PlayerSetting;
@@ -276,7 +277,7 @@ public final class MainGrid implements Serializable {
 
 		if (object instanceof MapTreeObject) {
 			if (isInBounds(x, y) && movablePathfinderGrid.pathfinderGrid.isTreePlantable(x, y)) {
-				mapObjectsManager.plantAdultTree(pos);
+				mapObjectsManager.plantAdultTree(pos, Tree.ETreeTypes.fromInt(((MapTreeObject) object).getStyle()));
 			}
 		} else if (object instanceof MapStoneObject) {
 			mapObjectsManager.addStone(pos, ((MapStoneObject) object).getCapacity());

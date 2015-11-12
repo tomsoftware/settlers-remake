@@ -94,7 +94,12 @@ public final class ArrowObject extends ProgressingSoundableObject implements IAr
 	public short getTargetY() {
 		return super.getY();
 	}
-
+	
+	@Override
+	public int getObjectStyle() {
+		return 0;
+	}
+	
 	public float getHitStrength() {
 		return hitStrength;
 	}
