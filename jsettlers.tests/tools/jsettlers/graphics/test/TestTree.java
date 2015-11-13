@@ -14,6 +14,7 @@
  *******************************************************************************/
 package jsettlers.graphics.test;
 
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.mapobject.IMapObject;
 
@@ -23,10 +24,15 @@ public class TestTree implements IMapObject {
 	public float getStateProgress() {
 		return 0;
 	}
-
+	
+	@Override
+	public EDrawableObject getObjectStyle() {
+		return null;
+	}
+	
 	@Override
 	public EMapObjectType getObjectType() {
-		return EMapObjectType.TREE_GROWING_AAA;
+		return EMapObjectType.TREE_ADULT;
 	}
 
 	@Override
@@ -37,10 +43,5 @@ public class TestTree implements IMapObject {
 	@Override
 	public IMapObject getMapObject(EMapObjectType type) {
 		return type == getObjectType() ? this : null;
-	}
-	
-	@Override
-	public int getObjectStyle() {
-		return 0;
 	}
 }

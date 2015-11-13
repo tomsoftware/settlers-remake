@@ -26,6 +26,7 @@ import jsettlers.common.buildings.IBuilding.IOccupyed;
 import jsettlers.common.buildings.IBuildingOccupyer;
 import jsettlers.common.buildings.OccupyerPlace;
 import jsettlers.common.images.AnimationSequence;
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.images.EImageLinkType;
 import jsettlers.common.images.ImageLink;
 import jsettlers.common.images.OriginalImageLink;
@@ -67,17 +68,6 @@ public class MapObjectDrawer {
 	private static final int BUILDINGS_FILE = 13;
 
 	
-	//- adult tree object sequences
-	private static final int[] TREE_SEQUENCES = new int[] {
-			1, 2, 4, 7, 8, 16, 17,
-	};
-	
-	//- cutting down tree object sequences
-	private static final int[] TREE_CHANGING_SEQUENCES = new int[] {
-			3, 3, 6, 9, 9, 18, 18,
-	};
-	
-	public static final int TREE_TYPES = TREE_SEQUENCES.length;
 	
 	/**
 	 * First images in tree cutting sequence
@@ -93,17 +83,7 @@ public class MapObjectDrawer {
 	 */
 	private static final int TREE_ROT_IMAGES = 4;
 
-	/**
-	 *
-	 */
-	private static final int TREE_SMALL = 12;
 
-	/**
-	 *
-	 */
-	private static final int TREE_MEDIUM = 11;
-
-	private static final int SMALL_GROWING_TREE = 22;
 
 	private static final int CORN = 23;
 	private static final int CORN_GROW_STEPS = 7;
@@ -184,7 +164,8 @@ public class MapObjectDrawer {
 		EMapObjectType type = object.getObjectType();
 
 		float progress = object.getStateProgress();
-
+		EDrawableObject objectStyle = object.getObjectStyle();
+		
 		if (type == EMapObjectType.ARROW) {
 			drawArrow(context, (IArrowMapObject) object, color);
 		} else {
@@ -207,6 +188,7 @@ public class MapObjectDrawer {
 				break;
 
 			case TREE_GROWING:
+				
 				drawGrowingTree(x, y, object, progress, color);
 				break;
 
@@ -681,27 +663,23 @@ public class MapObjectDrawer {
 
 	private void drawGrowingTree(int x, int y, IMapObject object, float progress, float color) {
 		Image image;
-		if (progress < 0.33) {
-			Sequence<? extends Image> seq =
-					this.imageProvider.getSettlerSequence(OBJECTS_FILE,
-							SMALL_GROWING_TREE);
-			image = seq.getImageSafe(0);
-		} else {
-			int treeType = object.getObjectStyle();
-			Sequence<? extends Image> seq =
-					this.imageProvider.getSettlerSequence(OBJECTS_FILE,
-							TREE_CHANGING_SEQUENCES[treeType]);
-			if (progress < 0.66) {
-				image = seq.getImageSafe(TREE_SMALL);
-			} else {
-				image = seq.getImageSafe(TREE_MEDIUM);
-			}
-		}
+		
+		EDrawableObject treeType = object.getObjectStyle();
+		
+		Sequence<? extends Image> seq = this.imageProvider.getSettlerSequence(treeType.file, treeType.sequences);
+		
+		image = seq.getImageSafe(treeType.firstFrame);
+
 		draw(image, x, y, color);
 	}
 
 	private void drawFallingTree(int x, int y, IMapObject object, float progress, float color) {
-		int treeType = object.getObjectStyle();
+		
+		EDrawableObject treeType = object.getObjectStyle();
+		
+		Sequence<? extends Image> seq = this.imageProvider.getSettlerSequence(treeType.file, treeType.sequences);
+		
+		
 		int imageStep = 0;
 
 		if (progress < IMapObject.TREE_CUT_1) {
@@ -726,18 +704,16 @@ public class MapObjectDrawer {
 			imageStep = relativeStep + TREE_FALL_IMAGES + 3;
 		}
 
-		Sequence<? extends Image> seq =
-				this.imageProvider.getSettlerSequence(OBJECTS_FILE,
-						TREE_CHANGING_SEQUENCES[treeType]);
+		//Sequence<? extends Image> seq = this.imageProvider.getSettlerSequence(OBJECTS_FILE, TREE_CHANGING_SEQUENCES[treeType]);
 		draw(seq.getImageSafe(imageStep), x, y, color);
+
 	}
 
 	private void drawTree(int x, int y, IMapObject object, float color) {
-		int treeType = object.getObjectStyle();
-		Sequence<? extends Image> seq =
-				this.imageProvider.getSettlerSequence(OBJECTS_FILE,
-						TREE_SEQUENCES[treeType]);
-
+		EDrawableObject treeType = object.getObjectStyle();
+		
+		Sequence<? extends Image> seq = this.imageProvider.getSettlerSequence(treeType.file, treeType.sequences);
+		
 		int step = getAnimationStep(x, y) % seq.length();
 		draw(seq.getImageSafe(step), x, y, color);
 	}
@@ -747,7 +723,11 @@ public class MapObjectDrawer {
 		draw(imageProvider.getImage(TREE_TEST_SEQUENCE.getImage(step)), x, y,
 				color);
 	}
-
+	
+	private int getAnimationStep(int x, int y) {
+		return 0xfffffff & (this.animationStep + x * 167 + y * 1223);
+	}
+	
 	/**
 	 * gets a 0 or a 1.
 	 *
@@ -778,9 +758,7 @@ public class MapObjectDrawer {
 				.getImageSafe(0), x, y, color, base);
 	}
 
-	private int getAnimationStep(int x, int y) {
-		return 0xfffffff & (this.animationStep + x * 167 + y * 1223);
-	}
+
 
 	/**
 	 * Increases the animation step for trees and other stuff.

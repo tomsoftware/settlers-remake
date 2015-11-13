@@ -20,6 +20,7 @@ import java.util.List;
 import jsettlers.common.buildings.EBuildingType;
 import jsettlers.common.buildings.IBuilding;
 import jsettlers.common.buildings.IBuildingMaterial;
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.mapobject.IMapObject;
 import jsettlers.common.material.EPriority;
@@ -61,7 +62,12 @@ public class TestBuilding implements IBuilding {
 	public float getStateProgress() {
 		return Math.min(this.constructed, 1);
 	}
-
+	
+	@Override
+	public EDrawableObject getObjectStyle() {
+		return null;
+	}
+	
 	@Override
 	public boolean isSelected() {
 		return false;
@@ -117,9 +123,5 @@ public class TestBuilding implements IBuilding {
 		return false;
 	}
 	
-	@Override
-	public int getObjectStyle() {
-		return 0;
-	}
 
 }

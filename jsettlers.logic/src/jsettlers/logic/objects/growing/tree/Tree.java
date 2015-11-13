@@ -14,6 +14,7 @@
  *******************************************************************************/
 package jsettlers.logic.objects.growing.tree;
 
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.position.ShortPoint2D;
 import jsettlers.common.position.RelativePoint;
@@ -39,29 +40,31 @@ public class Tree extends GrowingObject implements ISoundable {
 	private boolean soundPlayed;
 
 	public enum ETreeTypes {
-		ELM_1(0, true),
-		ELM_2(1, true),
-		OAK_1(2, true),
-		BIRCH_1(3, true),
-		BIRCH_2(4, true),
-		ARECACEAE_1(5, true),
-		ARECACEAE_2(6, true),
+		ELM_1(EDrawableObject.TREE_ELM_1, EDrawableObject.TREE_ELM_FALL, true),
+		ELM_2(EDrawableObject.TREE_ELM_2, EDrawableObject.TREE_ELM_FALL, true),
+		OAK_1(EDrawableObject.TREE_OAK_1, EDrawableObject.TREE_OAK_FALL, true),
+		BIRCH_1(EDrawableObject.TREE_BIRCH_1, EDrawableObject.TREE_BIRCH_FALL, true),
+		BIRCH_2(EDrawableObject.TREE_BIRCH_2, EDrawableObject.TREE_BIRCH_FALL, true),
+		ARECACEAE_1(EDrawableObject.TREE_ARECACEAE_1, EDrawableObject.TREE_ARECACEAE_FALL, true),
+		ARECACEAE_2(EDrawableObject.TREE_ARECACEAE_2, EDrawableObject.TREE_ARECACEAE_FALL, true),
 		 
-		SMALL(0, false),
-		 
-		NOT_DEFINED(0, true);
+		NEW_TREE(EDrawableObject.TREE_GROWING_NEW, null, false),
 		
-		public boolean isAdult;
-		public int style;
+		NOT_DEFINED(null, null, true);
 		
-		ETreeTypes(int style, boolean isAdult) {
+		public final boolean isAdult;
+		public final EDrawableObject style;
+		public final EDrawableObject style_dead;
+		
+		ETreeTypes(EDrawableObject style, EDrawableObject style_dead, boolean isAdult) {
 			this.isAdult = isAdult;
 			this.style = style;
+			this.style_dead = style_dead;
 		}
 		
 		public EMapObjectType getEMapObjectType() {
-			if (isAdult) return EMapObjectType.TREE_GROWING;
-			return EMapObjectType.TREE_ADULT;
+			//if (isAdult) return EMapObjectType.TREE_GROWING; //- <- TODO
+			return EMapObjectType.TREE_GROWING; //- <- ???
 		}
 		
 		static public ETreeTypes fromInt(int treeStyle) {
@@ -70,10 +73,13 @@ public class Tree extends GrowingObject implements ISoundable {
 			
 			return ETreeTypes.values()[treeStyle];
 		}
+		
+		static final ETreeTypes[] allAdultTrees = {ELM_1, ELM_2, OAK_1, BIRCH_1, BIRCH_2, ARECACEAE_1, ARECACEAE_2};
 	}
+	 
 	
 	//- save some memory and only use byte and not int
-	private byte treeTypeStyle; //- this value is ETreeTypes.ordinal();
+	private ETreeTypes treeType; //- this value is ETreeTypes.ordinal();
 	
 	/**
 	 * Creates a new Tree.
@@ -81,17 +87,47 @@ public class Tree extends GrowingObject implements ISoundable {
 	 * @param grid
 	 */
 	public Tree(ShortPoint2D pos, ETreeTypes treeStyle) {
-		super(pos, treeStyle.getEMapObjectType()); // TODO : Sound is played?!
+		super(pos, treeStyle.getEMapObjectType()); // TODO : Sound is played?!; Tree is not growing?!
 		
 		if (treeStyle != ETreeTypes.NOT_DEFINED) {
-			treeTypeStyle = (byte)treeStyle.style;
+			this.treeType = treeStyle;
 		}
 		else {
 			short x = pos.x;
 			short y = pos.y;
 			
-			treeTypeStyle = (byte)((x + x / 5 + y / 3 + y + y / 7) % MapObjectDrawer.TREE_TYPES);
+			int n = (byte)((x + x / 5 + y / 3 + y + y / 7) % ETreeTypes.allAdultTrees.length);
+			
+			this.treeType = ETreeTypes.allAdultTrees[n];
 		}
+	}
+	
+	@Override
+	public EDrawableObject getObjectStyle() {
+	
+		if (super.getObjectType() == EMapObjectType.TREE_ADULT)
+		{
+			return this.treeType.style;
+		}
+		else if (super.getObjectType() == EMapObjectType.TREE_DEAD)
+		{
+			return this.treeType.style_dead;
+		}
+		else //- TREE_GROWING
+		{
+			float progress = super.getStateProgress();
+			
+			if (progress < 0.33) {
+				return EDrawableObject.TREE_GROWING_NEW;
+			} else if (progress < 0.66) {
+				return EDrawableObject.TREE_GROWING_SMALL;
+			} else {
+				return EDrawableObject.TREE_GROWING_MEDIUM;
+			}
+		}
+		
+		
+		
 	}
 	
 	
@@ -130,8 +166,4 @@ public class Tree extends GrowingObject implements ISoundable {
 		return EMapObjectType.TREE_ADULT;
 	}
 	
-	@Override
-	public int getObjectStyle() {
-		return treeTypeStyle;
-	}
 }

@@ -31,6 +31,7 @@ public class MapTreeObject implements MapObject {
 	}
 	
 	public int getStyle() {
+		
 		return treeStyle;
 	}
 	

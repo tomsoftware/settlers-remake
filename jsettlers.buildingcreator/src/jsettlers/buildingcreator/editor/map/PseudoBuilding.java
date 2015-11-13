@@ -20,6 +20,7 @@ import java.util.List;
 import jsettlers.common.buildings.EBuildingType;
 import jsettlers.common.buildings.IBuilding;
 import jsettlers.common.buildings.IBuildingMaterial;
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.mapobject.IMapObject;
 import jsettlers.common.material.EPriority;
@@ -44,7 +45,12 @@ public class PseudoBuilding implements IBuilding, IBuilding.IMill {
 	public float getStateProgress() {
 		return 1;
 	}
-
+	
+	@Override
+	public EDrawableObject getObjectStyle() {
+		return null;
+	}
+	
 	@Override
 	public ShortPoint2D getPos() {
 		return pos;
@@ -123,8 +129,4 @@ public class PseudoBuilding implements IBuilding, IBuilding.IMill {
 		return false;
 	}
 	
-	@Override
-	public int getObjectStyle() {
-		return 0;
-	}
 }

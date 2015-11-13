@@ -14,6 +14,7 @@
  *******************************************************************************/
 package jsettlers.graphics.test;
 
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.mapobject.IMapObject;
 
@@ -29,7 +30,12 @@ public class TestStone implements IMapObject {
 	public float getStateProgress() {
 		return this.i;
 	}
-
+	
+	@Override
+	public EDrawableObject getObjectStyle() {
+		return null;
+	}
+	
 	@Override
 	public EMapObjectType getObjectType() {
 		return EMapObjectType.STONE;
@@ -45,9 +51,5 @@ public class TestStone implements IMapObject {
 		return type == getObjectType() ? this : null;
 	}
 	
-	@Override
-	public int getObjectStyle() {
-		return 0;
-	}
 
 }

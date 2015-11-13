@@ -14,6 +14,7 @@
  *******************************************************************************/
 package jsettlers.logic.objects.building;
 
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.logic.map.grid.objects.AbstractHexMapObject;
 import jsettlers.logic.movable.interfaces.IAttackable;
@@ -44,6 +45,11 @@ public class InformableMapObject extends AbstractHexMapObject implements IInform
 	}
 
 	@Override
+	public EDrawableObject getObjectStyle() {
+		return null;
+	}
+	
+	@Override
 	public boolean cutOff() {
 		return false;
 	}
@@ -58,8 +64,4 @@ public class InformableMapObject extends AbstractHexMapObject implements IInform
 		this.informable.informAboutAttackable(attackable);
 	}
 
-	@Override
-	public int getObjectStyle() {
-		return 0;
-	}
 }

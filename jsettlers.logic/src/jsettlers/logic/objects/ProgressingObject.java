@@ -14,6 +14,7 @@
  *******************************************************************************/
 package jsettlers.logic.objects;
 
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.position.ShortPoint2D;
 import jsettlers.logic.constants.MatchConstants;
 import jsettlers.logic.map.grid.objects.AbstractObjectsManagerObject;
@@ -30,6 +31,7 @@ public abstract class ProgressingObject extends AbstractObjectsManagerObject {
 	private int startTime;
 	private int duration;
 
+	
 	protected ProgressingObject(ShortPoint2D pos) {
 		super(pos);
 	}
@@ -44,6 +46,11 @@ public abstract class ProgressingObject extends AbstractObjectsManagerObject {
 		}
 	}
 
+	@Override
+	public EDrawableObject getObjectStyle() {
+		return null;
+	}
+	
 	/**
 	 * 
 	 * @param duration

@@ -76,9 +76,5 @@ public final class Wine extends GrowingObject {
 		grid.setLandscape(x, y, ELandscapeType.GRASS);
 	}
 	
-	@Override
-	public int getObjectStyle() {
-		return 0;
-	}
 
 }

@@ -14,6 +14,7 @@
  *******************************************************************************/
 package jsettlers.mapcreator.data.objects;
 
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.map.object.MapDecorationObject;
 import jsettlers.common.map.object.MapObject;
 import jsettlers.common.mapobject.EMapObjectType;
@@ -51,6 +52,11 @@ public class MapObjectContainer implements ObjectContainer, IMapObject {
 	}
 
 	@Override
+	public EDrawableObject getObjectStyle() {
+		return null;
+	}
+	
+	@Override
 	public IMapObject getNextObject() {
 		return null;
 	}
@@ -60,8 +66,4 @@ public class MapObjectContainer implements ObjectContainer, IMapObject {
 		return type == getObjectType() ? this : null;
 	}
 	
-	@Override
-	public int getObjectStyle() {
-		return 0;
-	}
 }

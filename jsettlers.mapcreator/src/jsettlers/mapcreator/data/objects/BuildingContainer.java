@@ -22,6 +22,7 @@ import jsettlers.common.buildings.EBuildingType;
 import jsettlers.common.buildings.IBuilding;
 import jsettlers.common.buildings.IBuildingMaterial;
 import jsettlers.common.buildings.IBuildingOccupyer;
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.landscape.ELandscapeType;
 import jsettlers.common.map.object.BuildingObject;
 import jsettlers.common.mapobject.EMapObjectType;
@@ -62,7 +63,12 @@ public class BuildingContainer implements ObjectContainer, IBuilding, LandscapeC
 	public float getStateProgress() {
 		return 1;
 	}
-
+	
+	@Override
+	public EDrawableObject getObjectStyle() {
+		return null;
+	}
+	
 	@Override
 	public IMapObject getNextObject() {
 		return null;
@@ -170,8 +176,5 @@ public class BuildingContainer implements ObjectContainer, IBuilding, LandscapeC
 		return false;
 	}
 	
-	@Override
-	public int getObjectStyle() {
-		return 0;
-	}
+
 }

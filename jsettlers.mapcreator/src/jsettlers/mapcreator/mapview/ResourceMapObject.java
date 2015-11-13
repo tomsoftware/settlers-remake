@@ -14,6 +14,7 @@
  *******************************************************************************/
 package jsettlers.mapcreator.mapview;
 
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.landscape.EResourceType;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.mapobject.IMapObject;
@@ -68,7 +69,12 @@ public class ResourceMapObject implements IMapObject {
 	public float getStateProgress() {
 		return (float) resourceAmount / Byte.MAX_VALUE;
 	}
-
+	
+	@Override
+	public EDrawableObject getObjectStyle() {
+		return null;
+	}
+	
 	@Override
 	public IMapObject getNextObject() {
 		return null;
@@ -79,8 +85,5 @@ public class ResourceMapObject implements IMapObject {
 		return type == getObjectType() ? this : null;
 	}
 	
-	@Override
-	public int getObjectStyle() {
-		return 0;
-	}
+
 }

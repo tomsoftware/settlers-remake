@@ -14,6 +14,7 @@
  *******************************************************************************/
 package jsettlers.logic.objects.stone;
 
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.position.RelativePoint;
 import jsettlers.logic.map.grid.objects.AbstractHexMapObject;
@@ -59,7 +60,12 @@ public class Stone extends AbstractHexMapObject {
 	public float getStateProgress() {
 		return leftCapacity;
 	}
-
+	
+	@Override
+	public EDrawableObject getObjectStyle() {
+		return null;
+	}
+	
 	@Override
 	public RelativePoint[] getBlockedTiles() {
 		return new RelativePoint[] { new RelativePoint(-1, -1), new RelativePoint(0, -1), new RelativePoint(-1, 0), new RelativePoint(0, 0),
@@ -69,11 +75,6 @@ public class Stone extends AbstractHexMapObject {
 	@Override
 	public boolean canBeCut() {
 		return leftCapacity > 0;
-	}
-
-	@Override
-	public int getObjectStyle() {
-		return 0;
 	}
 
 }

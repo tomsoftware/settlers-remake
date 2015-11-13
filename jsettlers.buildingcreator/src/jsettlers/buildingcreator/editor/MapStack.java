@@ -16,6 +16,7 @@ package jsettlers.buildingcreator.editor;
 
 import jsettlers.common.buildings.stacks.ConstructionStack;
 import jsettlers.common.buildings.stacks.RelativeStack;
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.mapobject.IMapObject;
 import jsettlers.common.mapobject.IStackMapObject;
@@ -38,7 +39,12 @@ public class MapStack implements IStackMapObject {
 	public float getStateProgress() {
 		return 0;
 	}
-
+	
+	@Override
+	public EDrawableObject getObjectStyle() {
+		return null;
+	}
+	
 	@Override
 	public IMapObject getNextObject() {
 		return null;
@@ -59,9 +65,5 @@ public class MapStack implements IStackMapObject {
 		return type == getObjectType() ? this : null;
 	}
 	
-	@Override
-	public int getObjectStyle() {
-		return 0;
-	}
 
 }

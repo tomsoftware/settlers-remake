@@ -14,6 +14,7 @@
  *******************************************************************************/
 package jsettlers.logic.objects.arrow;
 
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.mapobject.IArrowMapObject;
 import jsettlers.common.movable.EDirection;
@@ -94,11 +95,7 @@ public final class ArrowObject extends ProgressingSoundableObject implements IAr
 	public short getTargetY() {
 		return super.getY();
 	}
-	
-	@Override
-	public int getObjectStyle() {
-		return 0;
-	}
+
 	
 	public float getHitStrength() {
 		return hitStrength;

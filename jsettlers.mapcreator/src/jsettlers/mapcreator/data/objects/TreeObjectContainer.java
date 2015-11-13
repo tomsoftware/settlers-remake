@@ -14,6 +14,7 @@
  *******************************************************************************/
 package jsettlers.mapcreator.data.objects;
 
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.map.object.MapObject;
 import jsettlers.common.map.object.MapTreeObject;
 import jsettlers.common.mapobject.EMapObjectType;
@@ -33,14 +34,19 @@ public class TreeObjectContainer implements ObjectContainer, IMapObject {
 
 	@Override
 	public EMapObjectType getObjectType() {
-		return EMapObjectType.TREE_GROWING_AAA;
+		return EMapObjectType.TREE_ADULT;
 	}
 
 	@Override
 	public float getStateProgress() {
 		return 0;
 	}
-
+	
+	@Override
+	public EDrawableObject getObjectStyle() {
+		return null;
+	}
+	
 	@Override
 	public IMapObject getNextObject() {
 		return null;
@@ -64,8 +70,4 @@ public class TreeObjectContainer implements ObjectContainer, IMapObject {
 		return type == getObjectType() ? this : null;
 	}
 	
-	@Override
-	public int getObjectStyle() {
-		return 0;
-	}
 }

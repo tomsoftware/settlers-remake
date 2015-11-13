@@ -14,6 +14,7 @@
  *******************************************************************************/
 package jsettlers.logic.objects.stack;
 
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.mapobject.IStackMapObject;
 import jsettlers.common.material.EMaterialType;
@@ -84,7 +85,12 @@ public final class StackMapObject extends AbstractHexMapObject implements IStack
 	public final float getStateProgress() {
 		return 0;
 	}
-
+	
+	@Override
+	public EDrawableObject getObjectStyle() {
+		return null;
+	}
+	
 	@Override
 	public final EMaterialType getMaterialType() {
 		return EMaterialType.values[materialType];
@@ -105,8 +111,4 @@ public final class StackMapObject extends AbstractHexMapObject implements IStack
 		return false;
 	}
 
-	@Override
-	public int getObjectStyle() {
-		return 0;
-	}
 }

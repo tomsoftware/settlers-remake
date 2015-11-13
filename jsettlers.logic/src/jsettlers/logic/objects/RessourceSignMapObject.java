@@ -14,6 +14,7 @@
  *******************************************************************************/
 package jsettlers.logic.objects;
 
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.landscape.EResourceType;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.position.ShortPoint2D;
@@ -46,7 +47,12 @@ public final class RessourceSignMapObject extends AbstractObjectsManagerObject {
 	public float getStateProgress() {
 		return amount;
 	}
-
+	
+	@Override
+	public EDrawableObject getObjectStyle() {
+		return null;
+	}
+	
 	@Override
 	public boolean cutOff() {
 		return false;
@@ -62,10 +68,6 @@ public final class RessourceSignMapObject extends AbstractObjectsManagerObject {
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	public int getObjectStyle() {
-		return 0;
-	}
 	
 	public static final float getLivetime() {
 		return RandomSingleton.nextF() * MAX_RANDOM_LIVETIME + MINIMUM_LIVETIME;

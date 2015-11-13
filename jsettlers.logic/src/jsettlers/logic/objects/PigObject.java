@@ -14,6 +14,7 @@
  *******************************************************************************/
 package jsettlers.logic.objects;
 
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.logic.constants.MatchConstants;
 import jsettlers.logic.map.grid.objects.AbstractHexMapObject;
@@ -46,7 +47,12 @@ public class PigObject extends AbstractHexMapObject {
 	public float getStateProgress() {
 		return 0;
 	}
-
+	
+	@Override
+	public EDrawableObject getObjectStyle() {
+		return null;
+	}
+	
 	@Override
 	public boolean cutOff() {
 		return false;
@@ -57,8 +63,5 @@ public class PigObject extends AbstractHexMapObject {
 		return (MatchConstants.clock.getTime() - starttime) > LIVE_TIME;
 	}
 
-	@Override
-	public int getObjectStyle() {
-		return 0;
-	}
+	
 }

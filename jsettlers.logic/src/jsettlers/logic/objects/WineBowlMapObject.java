@@ -1,5 +1,6 @@
 package jsettlers.logic.objects;
 
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.logic.constants.Constants;
 import jsettlers.logic.map.grid.objects.AbstractHexMapObject;
@@ -23,7 +24,12 @@ public class WineBowlMapObject extends AbstractHexMapObject {
 	public float getStateProgress() {
 		return ((float) wineStack.getStackSize()) / Constants.STACK_SIZE;
 	}
-
+	
+	@Override
+	public EDrawableObject getObjectStyle() {
+		return null;
+	}
+	
 	@Override
 	public boolean cutOff() {
 		return false;
@@ -34,10 +40,6 @@ public class WineBowlMapObject extends AbstractHexMapObject {
 		return false;
 	}
 	
-	@Override
-	public int getObjectStyle() {
-		return 0;
-	}
 
 
 }

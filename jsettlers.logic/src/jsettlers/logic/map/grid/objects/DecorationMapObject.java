@@ -14,6 +14,7 @@
  *******************************************************************************/
 package jsettlers.logic.map.grid.objects;
 
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.mapobject.EMapObjectType;
 
 public class DecorationMapObject extends AbstractHexMapObject {
@@ -37,7 +38,12 @@ public class DecorationMapObject extends AbstractHexMapObject {
 	public float getStateProgress() {
 		return 0;
 	}
-
+	
+	@Override
+	public EDrawableObject getObjectStyle() {
+		return null;
+	}
+	
 	@Override
 	public boolean cutOff() {
 		return false;
@@ -48,9 +54,5 @@ public class DecorationMapObject extends AbstractHexMapObject {
 		return false;
 	}
 	
-	@Override
-	public int getObjectStyle() {
-		return 0;
-	}
 
 }

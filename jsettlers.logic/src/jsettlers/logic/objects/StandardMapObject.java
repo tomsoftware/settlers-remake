@@ -14,6 +14,7 @@
  *******************************************************************************/
 package jsettlers.logic.objects;
 
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.player.IPlayerable;
 import jsettlers.logic.map.grid.objects.AbstractHexMapObject;
@@ -40,7 +41,12 @@ public class StandardMapObject extends AbstractHexMapObject implements IPlayerab
 	public float getStateProgress() {
 		return 0;
 	}
-
+	
+	@Override
+	public EDrawableObject getObjectStyle() {
+		return null;
+	}
+	
 	@Override
 	public boolean cutOff() {
 		return false;
@@ -59,11 +65,6 @@ public class StandardMapObject extends AbstractHexMapObject implements IPlayerab
 	@Override
 	public byte getPlayerId() {
 		return player;
-	}
-	
-	@Override
-	public int getObjectStyle() {
-		return 0;
 	}
 
 }
