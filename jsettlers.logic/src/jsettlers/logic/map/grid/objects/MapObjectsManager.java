@@ -29,6 +29,8 @@ import jsettlers.common.position.ShortPoint2D;
 import jsettlers.logic.constants.Constants;
 import jsettlers.logic.constants.MatchConstants;
 import jsettlers.logic.movable.interfaces.IInformable;
+import jsettlers.logic.objects.DecorationObject;
+import jsettlers.logic.objects.EDecorationType;
 import jsettlers.logic.objects.PigObject;
 import jsettlers.logic.objects.RessourceSignMapObject;
 import jsettlers.logic.objects.SelfDeletingMapObject;
@@ -261,6 +263,10 @@ public final class MapObjectsManager implements IScheduledTimerable, Serializabl
 		addMapObject(pos, new Stone(capacity));
 	}
 
+	public void addDecoration(ShortPoint2D pos, EDecorationType DecoType) {
+		addMapObject(pos, new DecorationObject(DecoType));
+	}
+	
 	public void plantAdultTree(ShortPoint2D pos, Tree.ETreeTypes treeType) {
 		addMapObject(pos, new AdultTree(pos, treeType));
 	}

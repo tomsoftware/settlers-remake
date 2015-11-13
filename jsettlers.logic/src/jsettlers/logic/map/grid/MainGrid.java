@@ -51,6 +51,7 @@ import jsettlers.common.map.IGraphicsBackgroundListener;
 import jsettlers.common.map.IGraphicsGrid;
 import jsettlers.common.map.IMapData;
 import jsettlers.common.map.object.BuildingObject;
+import jsettlers.common.map.object.MapDecorationObject;
 import jsettlers.common.map.object.MapObject;
 import jsettlers.common.map.object.MapStoneObject;
 import jsettlers.common.map.object.MapTreeObject;
@@ -106,6 +107,7 @@ import jsettlers.logic.map.save.MapList;
 import jsettlers.logic.movable.Movable;
 import jsettlers.logic.movable.interfaces.AbstractMovableGrid;
 import jsettlers.logic.movable.interfaces.IAttackable;
+import jsettlers.logic.objects.EDecorationType;
 import jsettlers.logic.objects.arrow.ArrowObject;
 import jsettlers.logic.objects.growing.tree.Tree;
 import jsettlers.logic.objects.stack.StackMapObject;
@@ -228,6 +230,13 @@ public final class MainGrid implements Serializable {
 		for (short y = 0; y < height; y++) {
 			for (short x = 0; x < width; x++) {
 				MapObject object = mapGrid.getMapObject(x, y);
+				
+				if (object instanceof MapDecorationObject)
+				{
+					System.out.println("a");
+				
+				}
+				
 				if (object != null && isOccupyableBuilding(object) && isActivePlayer(object, playerSettings)) {
 					addMapObject(x, y, object);
 				}
@@ -281,6 +290,8 @@ public final class MainGrid implements Serializable {
 			}
 		} else if (object instanceof MapStoneObject) {
 			mapObjectsManager.addStone(pos, ((MapStoneObject) object).getCapacity());
+		} else if (object instanceof MapDecorationObject) {
+			mapObjectsManager.addDecoration(pos, EDecorationType.fromInt(((MapDecorationObject) object).getStyle()));			
 		} else if (object instanceof StackObject) {
 			placeStack(pos, ((StackObject) object).getType(), ((StackObject) object).getCount());
 		} else if (object instanceof BuildingObject) {

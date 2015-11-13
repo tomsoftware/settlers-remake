@@ -12,59 +12,69 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  *******************************************************************************/
-package jsettlers.mapcreator.data.objects;
+package jsettlers.logic.objects;
 
 import jsettlers.common.images.EDrawableObject;
-import jsettlers.common.map.object.MapDecorationObject;
 import jsettlers.common.map.object.MapObject;
 import jsettlers.common.mapobject.EMapObjectType;
-import jsettlers.common.mapobject.IMapObject;
-import jsettlers.common.position.RelativePoint;
+import jsettlers.logic.map.grid.objects.AbstractHexMapObject;
 
-public class MapObjectContainer implements ObjectContainer, IMapObject {
 
-	private final MapDecorationObject object;
 
-	public MapObjectContainer(MapDecorationObject object) {
-		this.object = object;
+/**
+ * A decoratio object
+ * 
+ * @thomas Zeugner
+ */
+public class DecorationObject extends AbstractHexMapObject implements MapObject{
+	private static final long serialVersionUID = -3554691277157393770L;
+
+
+	public EDecorationType styleType;
+	
+	//private static DecorationObject[] allInstance = new DecorationObject[EDecorationType.values().length];
+	
+	public DecorationObject(EDecorationType style) {
+		this.styleType = style;
 	}
-
-	@Override
-	public MapObject getMapObject() {
-		return object;
+	/*
+	public static DecorationObject getInstance(EDecorationType style) {
+		if (style==null) return null;
+		
+		int index = style.ordinal();
+	
+		//- Cache all instances to save memory
+		if (allInstance[index] == null) allInstance[index] = new DecorationObject(style);
+		return allInstance[index];
 	}
-
-	@Override
-	public RelativePoint[] getProtectedArea() {
-		return new RelativePoint[] {
-				new RelativePoint(0, 0)
-		};
-	}
+	*/
 
 	@Override
 	public EMapObjectType getObjectType() {
-		return null;
-		//return object.getType();
+		return EMapObjectType.DECORATION;
 	}
 
 	@Override
 	public float getStateProgress() {
 		return 0;
 	}
-
+	
 	@Override
 	public EDrawableObject getObjectStyle() {
-		return null;
+		return styleType.style;
 	}
 	
 	@Override
-	public IMapObject getNextObject() {
-		return null;
+	public boolean cutOff() {
+		return false;
 	}
 
 	@Override
-	public IMapObject getMapObject(EMapObjectType type) {
-		return type == getObjectType() ? this : null;
+	public boolean canBeCut() {
+		return false;
 	}
+
 	
 }
+
+

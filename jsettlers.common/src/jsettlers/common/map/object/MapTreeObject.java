@@ -22,7 +22,7 @@ public class MapTreeObject implements MapObject {
 		return new MapTreeObject(-1);
 	}
 	
-	public static MapTreeObject getInstance(/*Tree.ETreeTypes*/ int treeStyle) {
+	public static MapTreeObject getInstance(/*Tree.ETreeTypes*/ int treeStyle) { //- TODO : Thomas Tree Type to ENUM!
 		return new MapTreeObject(treeStyle);
 	}
 	

@@ -169,8 +169,9 @@ public class EditorWindow implements IMapInterfaceListener, ActionFireable, Test
 					new PlaceMapObjectTool(MapStoneObject.getInstance(6)), new PlaceMapObjectTool(MapStoneObject.getInstance(7)),
 					new PlaceMapObjectTool(MapStoneObject.getInstance(8)), new PlaceMapObjectTool(MapStoneObject.getInstance(9)),
 					new PlaceMapObjectTool(MapStoneObject.getInstance(10)),
-					new PlaceMapObjectTool(new MapDecorationObject(EMapObjectType.PLANT_DECORATION)),
-					new PlaceMapObjectTool(new MapDecorationObject(EMapObjectType.DESERT_DECORATION)), }),
+					//new PlaceMapObjectTool(new MapDecorationObject(EMapObjectType.PLANT_DECORATION)),
+					//new PlaceMapObjectTool(new MapDecorationObject(EMapObjectType.DESERT_DECORATION)), 
+					}),
 			new ToolBox(EditorLabels.getLabel("category-settlers"), new ToolNode[] {
 					new ToolBox(EditorLabels.getLabel("category-worker"), new ToolNode[] { new PlaceMovableTool(EMovableType.BEARER, this),
 							new PlaceMovableTool(EMovableType.BRICKLAYER, this), new PlaceMovableTool(EMovableType.DIGGER, this),

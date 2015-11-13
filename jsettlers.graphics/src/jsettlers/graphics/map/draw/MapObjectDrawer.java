@@ -191,7 +191,11 @@ public class MapObjectDrawer {
 				
 				drawGrowingTree(x, y, object, progress, color);
 				break;
-
+				
+			case DECORATION:
+				drawDecoration(x, y, object, color);
+				break;
+				
 			case CORN_GROWING:
 				drawGrowingCorn(x, y, object, color);
 				break;
@@ -727,6 +731,17 @@ public class MapObjectDrawer {
 	private int getAnimationStep(int x, int y) {
 		return 0xfffffff & (this.animationStep + x * 167 + y * 1223);
 	}
+	
+	
+	private void drawDecoration(int x, int y, IMapObject object, float color) {
+		EDrawableObject objectType = object.getObjectStyle();
+		
+		Sequence<? extends Image> seq = this.imageProvider.getSettlerSequence(objectType.file, objectType.sequences);
+		
+		draw(seq.getImageSafe(objectType.firstFrame), x, y, color);
+	}
+
+	
 	
 	/**
 	 * gets a 0 or a 1.

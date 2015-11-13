@@ -14,16 +14,20 @@
  *******************************************************************************/
 package jsettlers.common.map.object;
 
-import jsettlers.common.mapobject.EMapObjectType;
 
 public class MapDecorationObject implements MapObject {
-	private final EMapObjectType type;
+	private final int decoStyle;
 
-	public MapDecorationObject(EMapObjectType type) {
-		this.type = type;
+	public MapDecorationObject(int decoStyle) {
+		this.decoStyle = decoStyle;
 	}
 
-	public EMapObjectType getType() {
-		return type;
+	public int getStyle() {
+		return decoStyle;
 	}
+	
+	public static MapDecorationObject getInstance(/*Tree.ETreeTypes*/ int decoStyle) { //- TODO : Thomas Tree Type to ENUM!
+		return new MapDecorationObject(decoStyle);
+	}
+	
 }
