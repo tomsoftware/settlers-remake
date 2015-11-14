@@ -231,12 +231,6 @@ public final class MainGrid implements Serializable {
 			for (short x = 0; x < width; x++) {
 				MapObject object = mapGrid.getMapObject(x, y);
 				
-				if (object instanceof MapDecorationObject)
-				{
-					System.out.println("a");
-				
-				}
-				
 				if (object != null && isOccupyableBuilding(object) && isActivePlayer(object, playerSettings)) {
 					addMapObject(x, y, object);
 				}

@@ -14,8 +14,10 @@
  *******************************************************************************/
 package jsettlers.logic.objects.growing.tree;
 
+import jsettlers.common.images.DrawableObjectFrame;
 import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.mapobject.EMapObjectType;
+import jsettlers.common.mapobject.IMapObject;
 import jsettlers.common.position.ShortPoint2D;
 import jsettlers.common.position.RelativePoint;
 import jsettlers.common.sound.ISoundable;
@@ -103,26 +105,68 @@ public class Tree extends GrowingObject implements ISoundable {
 	}
 	
 	@Override
-	public EDrawableObject getObjectStyle() {
+	public DrawableObjectFrame getObjectStyle() {
 	
+		/**
+		 * First images in tree cutting sequence
+		 */
+		final int TREE_FALL_IMAGES = 4;
+
+		/**
+		 * Tree falling speed. bigger => faster.
+		 */
+		final float TREE_FALLING_SPEED = 1 / 0.001f;
+		/**
+		 *
+		 */
+		final int TREE_ROT_IMAGES = 4;
+		
+		
 		if (super.getObjectType() == EMapObjectType.TREE_ADULT)
 		{
-			return this.treeType.style;
+			return new DrawableObjectFrame(this.treeType.style);
 		}
 		else if (super.getObjectType() == EMapObjectType.TREE_DEAD)
 		{
-			return this.treeType.style_dead;
+			float progress = super.getStateProgress();
+			
+			int imageStep = 0;
+
+			if (progress < IMapObject.TREE_CUT_1) {
+				imageStep = (int) (progress * TREE_FALLING_SPEED);
+				if (imageStep >= TREE_FALL_IMAGES) {
+					imageStep = TREE_FALL_IMAGES - 1;
+				}
+			} else if (progress < IMapObject.TREE_CUT_2) {
+				// cut image 1
+				imageStep = TREE_FALL_IMAGES;
+			} else if (progress < IMapObject.TREE_CUT_3) {
+				// cut image 2
+				imageStep = TREE_FALL_IMAGES + 1;
+			} else if (progress < IMapObject.TREE_TAKEN) {
+				// cut image 3
+				imageStep = TREE_FALL_IMAGES + 2;
+			} else {
+				int relativeStep =
+						(int) ((progress - IMapObject.TREE_TAKEN)
+								/ (1 - IMapObject.TREE_TAKEN) * TREE_ROT_IMAGES);
+
+				imageStep = relativeStep + TREE_FALL_IMAGES + 3;
+			}
+			
+			
+			return new DrawableObjectFrame(this.treeType.style_dead, imageStep, 4);
 		}
 		else //- TREE_GROWING
 		{
 			float progress = super.getStateProgress();
 			
 			if (progress < 0.33) {
-				return EDrawableObject.TREE_GROWING_NEW;
+				return new DrawableObjectFrame(EDrawableObject.TREE_GROWING_NEW);
 			} else if (progress < 0.66) {
-				return EDrawableObject.TREE_GROWING_SMALL;
+				return new DrawableObjectFrame(EDrawableObject.TREE_GROWING_SMALL);
 			} else {
-				return EDrawableObject.TREE_GROWING_MEDIUM;
+				return new DrawableObjectFrame(EDrawableObject.TREE_GROWING_MEDIUM);
 			}
 		}
 		

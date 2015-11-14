@@ -14,7 +14,7 @@
  *******************************************************************************/
 package jsettlers.logic.objects.building;
 
-import jsettlers.common.images.EDrawableObject;
+import jsettlers.common.images.DrawableObjectFrame;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.player.IPlayerable;
 import jsettlers.logic.map.grid.objects.AbstractHexMapObject;
@@ -43,7 +43,7 @@ public final class FlagMapObject extends AbstractHexMapObject implements IPlayer
 	}
 
 	@Override
-	public EDrawableObject getObjectStyle() {
+	public DrawableObjectFrame getObjectStyle() {
 		return null;
 	}
 	

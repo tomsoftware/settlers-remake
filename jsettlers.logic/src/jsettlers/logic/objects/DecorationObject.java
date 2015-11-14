@@ -14,6 +14,7 @@
  *******************************************************************************/
 package jsettlers.logic.objects;
 
+import jsettlers.common.images.DrawableObjectFrame;
 import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.map.object.MapObject;
 import jsettlers.common.mapobject.EMapObjectType;
@@ -32,22 +33,10 @@ public class DecorationObject extends AbstractHexMapObject implements MapObject{
 
 	public EDecorationType styleType;
 	
-	//private static DecorationObject[] allInstance = new DecorationObject[EDecorationType.values().length];
-	
 	public DecorationObject(EDecorationType style) {
 		this.styleType = style;
 	}
-	/*
-	public static DecorationObject getInstance(EDecorationType style) {
-		if (style==null) return null;
-		
-		int index = style.ordinal();
-	
-		//- Cache all instances to save memory
-		if (allInstance[index] == null) allInstance[index] = new DecorationObject(style);
-		return allInstance[index];
-	}
-	*/
+
 
 	@Override
 	public EMapObjectType getObjectType() {
@@ -60,8 +49,8 @@ public class DecorationObject extends AbstractHexMapObject implements MapObject{
 	}
 	
 	@Override
-	public EDrawableObject getObjectStyle() {
-		return styleType.style;
+	public DrawableObjectFrame getObjectStyle() {
+		return new DrawableObjectFrame(styleType.style);
 	}
 	
 	@Override

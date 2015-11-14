@@ -14,6 +14,7 @@
  *******************************************************************************/
 package jsettlers.logic.objects.building;
 
+import jsettlers.common.images.DrawableObjectFrame;
 import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.logic.map.grid.objects.AbstractHexMapObject;
@@ -30,7 +31,6 @@ public final class ConstructionMarkObject extends AbstractHexMapObject {
 	private static final long serialVersionUID = 4420024473109760614L;
 
 	private float constructionValue;
-	private EDrawableObject drawStyle;
 	
 	public ConstructionMarkObject(byte constructionValue) {
 		this.setConstructionValue(constructionValue);
@@ -47,8 +47,8 @@ public final class ConstructionMarkObject extends AbstractHexMapObject {
 	}
 	
 	@Override
-	public EDrawableObject getObjectStyle() {
-		return drawStyle;
+	public DrawableObjectFrame getObjectStyle() {
+		return null;
 	}
 	
 	@Override

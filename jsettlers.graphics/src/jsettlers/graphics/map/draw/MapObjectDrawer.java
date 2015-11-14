@@ -26,6 +26,7 @@ import jsettlers.common.buildings.IBuilding.IOccupyed;
 import jsettlers.common.buildings.IBuildingOccupyer;
 import jsettlers.common.buildings.OccupyerPlace;
 import jsettlers.common.images.AnimationSequence;
+import jsettlers.common.images.DrawableObjectFrame;
 import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.images.EImageLinkType;
 import jsettlers.common.images.ImageLink;
@@ -69,19 +70,7 @@ public class MapObjectDrawer {
 
 	
 	
-	/**
-	 * First images in tree cutting sequence
-	 */
-	private static final int TREE_FALL_IMAGES = 4;
 
-	/**
-	 * Tree falling speed. bigger => faster.
-	 */
-	private static final float TREE_FALLING_SPEED = 1 / 0.001f;
-	/**
-	 *
-	 */
-	private static final int TREE_ROT_IMAGES = 4;
 
 
 
@@ -164,7 +153,8 @@ public class MapObjectDrawer {
 		EMapObjectType type = object.getObjectType();
 
 		float progress = object.getStateProgress();
-		EDrawableObject objectStyle = object.getObjectStyle();
+		DrawableObjectFrame objectStyleFrame = object.getObjectStyle();
+		
 		
 		if (type == EMapObjectType.ARROW) {
 			drawArrow(context, (IArrowMapObject) object, color);
@@ -174,27 +164,35 @@ public class MapObjectDrawer {
 			switch (type) {
 
 			case TREE_ADULT:
-				if (context.ENABLE_ORIGINAL) {
-					drawTree(x, y, object, color);
-				} else {
-					drawTreeTest(x, y, color);
-				}
-				break;
-
 			case TREE_DEAD:
-				// TODO: falling tree sound.
-				playSound(object, 4);
-				drawFallingTree(x, y, object, progress, color);
+			case TREE_GROWING:
+			case DECORATION:
+			{
+				//- graphic information
+				EDrawableObject objectStyle = objectStyleFrame.style;
+				
+				//- read image sequence to graphic information
+				Sequence<? extends Image> seq = this.imageProvider.getSettlerSequence(objectStyle.file, objectStyle.sequences);
+				
+				//- witch Frame of [seq] sound by shown?
+				int step = objectStyleFrame.frame;
+				
+				if (objectStyleFrame.doPlayAnimation) {
+					//- use the next image
+					step = getAnimationStep(x, y) % seq.length();
+				}
+				
+				//- Draw image
+				draw(seq.getImageSafe(step), x, y, color);
+
+				//- is a Sound available for this File
+				if (objectStyleFrame.soundId > 0) {
+					playSound(object, objectStyleFrame.soundId);
+				}
+				
 				break;
 
-			case TREE_GROWING:
-				
-				drawGrowingTree(x, y, object, progress, color);
-				break;
-				
-			case DECORATION:
-				drawDecoration(x, y, object, color);
-				break;
+			}
 				
 			case CORN_GROWING:
 				drawGrowingCorn(x, y, object, color);
@@ -665,81 +663,12 @@ public class MapObjectDrawer {
 		draw(seq.getImageSafe(step), x, y, color);
 	}
 
-	private void drawGrowingTree(int x, int y, IMapObject object, float progress, float color) {
-		Image image;
-		
-		EDrawableObject treeType = object.getObjectStyle();
-		
-		Sequence<? extends Image> seq = this.imageProvider.getSettlerSequence(treeType.file, treeType.sequences);
-		
-		image = seq.getImageSafe(treeType.firstFrame);
 
-		draw(image, x, y, color);
-	}
-
-	private void drawFallingTree(int x, int y, IMapObject object, float progress, float color) {
-		
-		EDrawableObject treeType = object.getObjectStyle();
-		
-		Sequence<? extends Image> seq = this.imageProvider.getSettlerSequence(treeType.file, treeType.sequences);
-		
-		
-		int imageStep = 0;
-
-		if (progress < IMapObject.TREE_CUT_1) {
-			imageStep = (int) (progress * TREE_FALLING_SPEED);
-			if (imageStep >= TREE_FALL_IMAGES) {
-				imageStep = TREE_FALL_IMAGES - 1;
-			}
-		} else if (progress < IMapObject.TREE_CUT_2) {
-			// cut image 1
-			imageStep = TREE_FALL_IMAGES;
-		} else if (progress < IMapObject.TREE_CUT_3) {
-			// cut image 2
-			imageStep = TREE_FALL_IMAGES + 1;
-		} else if (progress < IMapObject.TREE_TAKEN) {
-			// cut image 3
-			imageStep = TREE_FALL_IMAGES + 2;
-		} else {
-			int relativeStep =
-					(int) ((progress - IMapObject.TREE_TAKEN)
-							/ (1 - IMapObject.TREE_TAKEN) * TREE_ROT_IMAGES);
-
-			imageStep = relativeStep + TREE_FALL_IMAGES + 3;
-		}
-
-		//Sequence<? extends Image> seq = this.imageProvider.getSettlerSequence(OBJECTS_FILE, TREE_CHANGING_SEQUENCES[treeType]);
-		draw(seq.getImageSafe(imageStep), x, y, color);
-
-	}
-
-	private void drawTree(int x, int y, IMapObject object, float color) {
-		EDrawableObject treeType = object.getObjectStyle();
-		
-		Sequence<? extends Image> seq = this.imageProvider.getSettlerSequence(treeType.file, treeType.sequences);
-		
-		int step = getAnimationStep(x, y) % seq.length();
-		draw(seq.getImageSafe(step), x, y, color);
-	}
-
-	private void drawTreeTest(int x, int y, float color) {
-		int step = getAnimationStep(x, y) % TREE_TEST_SEQUENCE.getLength();
-		draw(imageProvider.getImage(TREE_TEST_SEQUENCE.getImage(step)), x, y,
-				color);
-	}
 	
 	private int getAnimationStep(int x, int y) {
 		return 0xfffffff & (this.animationStep + x * 167 + y * 1223);
 	}
 	
-	
-	private void drawDecoration(int x, int y, IMapObject object, float color) {
-		EDrawableObject objectType = object.getObjectStyle();
-		
-		Sequence<? extends Image> seq = this.imageProvider.getSettlerSequence(objectType.file, objectType.sequences);
-		
-		draw(seq.getImageSafe(objectType.firstFrame), x, y, color);
-	}
 
 	
 	

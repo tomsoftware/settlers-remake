@@ -132,14 +132,14 @@ public enum EDrawableObject {
 	public final byte file;
 	public final int sequences;
 	public final byte firstFrame;
-	public final boolean playSequences;
+	public final boolean isPlayableSequences;
 
 	
 	EDrawableObject(int file, int sequences, int firstFrame, boolean playSequences) {
 		this.file = (byte)file;
 		this.sequences	= sequences;
 		this.firstFrame = (byte)firstFrame;
-		this.playSequences = playSequences;
+		this.isPlayableSequences = playSequences;
 		
 	}
 	
@@ -147,6 +147,7 @@ public enum EDrawableObject {
 		this.file = (byte)file;
 		this.sequences	= sequences;
 		this. firstFrame = (byte)firstFrame;
-		this.playSequences = false;
+		this.isPlayableSequences = false;
 	}
 }
+

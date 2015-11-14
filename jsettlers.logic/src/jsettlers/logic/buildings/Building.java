@@ -28,7 +28,7 @@ import jsettlers.common.buildings.IBuildingMaterial;
 import jsettlers.common.buildings.RelativeBricklayer;
 import jsettlers.common.buildings.stacks.ConstructionStack;
 import jsettlers.common.buildings.stacks.RelativeStack;
-import jsettlers.common.images.EDrawableObject;
+import jsettlers.common.images.DrawableObjectFrame;
 import jsettlers.common.map.shapes.FreeMapArea;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.material.EPriority;
@@ -708,7 +708,7 @@ public abstract class Building extends AbstractHexMapObject implements IConstruc
 	}
 	
 	@Override
-	public EDrawableObject getObjectStyle() {
+	public DrawableObjectFrame getObjectStyle() {
 		return null;
 	}
 

@@ -5,7 +5,7 @@ import java.util.List;
 import jsettlers.common.buildings.EBuildingType;
 import jsettlers.common.buildings.IBuilding;
 import jsettlers.common.buildings.IBuildingMaterial;
-import jsettlers.common.images.EDrawableObject;
+import jsettlers.common.images.DrawableObjectFrame;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.mapobject.IMapObject;
 import jsettlers.common.material.EPriority;
@@ -35,7 +35,7 @@ public class PlacementBuilding implements IBuilding, IBuilding.IMill {
 	}
 	
 	@Override
-	public EDrawableObject getObjectStyle() {
+	public DrawableObjectFrame getObjectStyle() {
 		return null;
 	}
 	

@@ -14,7 +14,7 @@
  *******************************************************************************/
 package jsettlers.logic.objects.stack;
 
-import jsettlers.common.images.EDrawableObject;
+import jsettlers.common.images.DrawableObjectFrame;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.mapobject.IStackMapObject;
 import jsettlers.common.material.EMaterialType;
@@ -87,7 +87,7 @@ public final class StackMapObject extends AbstractHexMapObject implements IStack
 	}
 	
 	@Override
-	public EDrawableObject getObjectStyle() {
+	public DrawableObjectFrame getObjectStyle() {
 		return null;
 	}
 	

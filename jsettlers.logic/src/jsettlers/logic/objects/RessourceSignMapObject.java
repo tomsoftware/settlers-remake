@@ -14,7 +14,7 @@
  *******************************************************************************/
 package jsettlers.logic.objects;
 
-import jsettlers.common.images.EDrawableObject;
+import jsettlers.common.images.DrawableObjectFrame;
 import jsettlers.common.landscape.EResourceType;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.position.ShortPoint2D;
@@ -49,7 +49,7 @@ public final class RessourceSignMapObject extends AbstractObjectsManagerObject {
 	}
 	
 	@Override
-	public EDrawableObject getObjectStyle() {
+	public DrawableObjectFrame getObjectStyle() {
 		return null;
 	}
 	

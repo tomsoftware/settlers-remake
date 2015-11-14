@@ -14,7 +14,7 @@
  *******************************************************************************/
 package jsettlers.logic.objects;
 
-import jsettlers.common.images.EDrawableObject;
+import jsettlers.common.images.DrawableObjectFrame;
 import jsettlers.common.position.ShortPoint2D;
 import jsettlers.logic.constants.MatchConstants;
 import jsettlers.logic.map.grid.objects.AbstractObjectsManagerObject;
@@ -47,7 +47,7 @@ public abstract class ProgressingObject extends AbstractObjectsManagerObject {
 	}
 
 	@Override
-	public EDrawableObject getObjectStyle() {
+	public DrawableObjectFrame getObjectStyle() {
 		return null;
 	}
 	

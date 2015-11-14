@@ -14,7 +14,7 @@
  *******************************************************************************/
 package jsettlers.common.mapobject;
 
-import jsettlers.common.images.EDrawableObject;
+import jsettlers.common.images.DrawableObjectFrame;
 
 /**
  * This interface is used to define an object that can be displayed on the map.
@@ -71,5 +71,5 @@ public interface IMapObject {
 	/**
 	 * Returns the Style / Image for this object e.g. the Tree type
 	 */ 
-	EDrawableObject getObjectStyle();
+	DrawableObjectFrame getObjectStyle();
 }
