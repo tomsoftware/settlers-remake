@@ -14,6 +14,7 @@
  *******************************************************************************/
 package jsettlers.logic.objects.growing.tree;
 
+import jsettlers.common.map.object.ETreeTypes;
 import jsettlers.common.position.ShortPoint2D;
 
 /**
@@ -30,7 +31,7 @@ public final class AdultTree extends Tree {
 	 * 
 	 * @param grid
 	 */
-	public AdultTree(ShortPoint2D pos, Tree.ETreeTypes treeType) {
+	public AdultTree(ShortPoint2D pos, ETreeTypes treeType) {
 		super(pos, treeType);
 		super.changeState();
 	}

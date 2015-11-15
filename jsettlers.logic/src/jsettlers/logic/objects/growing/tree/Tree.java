@@ -16,6 +16,7 @@ package jsettlers.logic.objects.growing.tree;
 
 import jsettlers.common.images.DrawableObjectFrame;
 import jsettlers.common.images.EDrawableObject;
+import jsettlers.common.map.object.ETreeTypes;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.mapobject.IMapObject;
 import jsettlers.common.position.ShortPoint2D;
@@ -41,44 +42,6 @@ public class Tree extends GrowingObject implements ISoundable {
 
 	private boolean soundPlayed;
 
-	public enum ETreeTypes {
-		ELM_1(EDrawableObject.TREE_ELM_1, EDrawableObject.TREE_ELM_FALL, true),
-		ELM_2(EDrawableObject.TREE_ELM_2, EDrawableObject.TREE_ELM_FALL, true),
-		OAK_1(EDrawableObject.TREE_OAK_1, EDrawableObject.TREE_OAK_FALL, true),
-		BIRCH_1(EDrawableObject.TREE_BIRCH_1, EDrawableObject.TREE_BIRCH_FALL, true),
-		BIRCH_2(EDrawableObject.TREE_BIRCH_2, EDrawableObject.TREE_BIRCH_FALL, true),
-		ARECACEAE_1(EDrawableObject.TREE_ARECACEAE_1, EDrawableObject.TREE_ARECACEAE_FALL, true),
-		ARECACEAE_2(EDrawableObject.TREE_ARECACEAE_2, EDrawableObject.TREE_ARECACEAE_FALL, true),
-		 
-		NEW_TREE(EDrawableObject.TREE_GROWING_NEW, null, false),
-		
-		NOT_DEFINED(null, null, true);
-		
-		public final boolean isAdult;
-		public final EDrawableObject style;
-		public final EDrawableObject style_dead;
-		
-		ETreeTypes(EDrawableObject style, EDrawableObject style_dead, boolean isAdult) {
-			this.isAdult = isAdult;
-			this.style = style;
-			this.style_dead = style_dead;
-		}
-		
-		public EMapObjectType getEMapObjectType() {
-			//if (isAdult) return EMapObjectType.TREE_GROWING; //- <- TODO
-			return EMapObjectType.TREE_GROWING; //- <- ???
-		}
-		
-		static public ETreeTypes fromInt(int treeStyle) {
-			if ((treeStyle < 0) || (treeStyle >= ETreeTypes.values().length))
-				return ETreeTypes.NOT_DEFINED;
-			
-			return ETreeTypes.values()[treeStyle];
-		}
-		
-		static final ETreeTypes[] allAdultTrees = {ELM_1, ELM_2, OAK_1, BIRCH_1, BIRCH_2, ARECACEAE_1, ARECACEAE_2};
-	}
-	 
 	
 	//- save some memory and only use byte and not int
 	private ETreeTypes treeType; //- this value is ETreeTypes.ordinal();
@@ -121,6 +84,15 @@ public class Tree extends GrowingObject implements ISoundable {
 		 */
 		final int TREE_ROT_IMAGES = 4;
 		
+		/**
+		 *
+		 */
+		final float TREE_FALL = 0.03F;
+		final float TREE_CUT_2 = 0.06F;
+		final float TREE_CUT_3 = 0.09F;
+		final float TREE_TAKEN = 0.1F;
+		
+		
 		
 		if (super.getObjectType() == EMapObjectType.TREE_ADULT)
 		{
@@ -132,24 +104,24 @@ public class Tree extends GrowingObject implements ISoundable {
 			
 			int imageStep = 0;
 
-			if (progress < IMapObject.TREE_CUT_1) {
+			if (progress < TREE_FALL) {
 				imageStep = (int) (progress * TREE_FALLING_SPEED);
 				if (imageStep >= TREE_FALL_IMAGES) {
 					imageStep = TREE_FALL_IMAGES - 1;
 				}
-			} else if (progress < IMapObject.TREE_CUT_2) {
+			} else if (progress < TREE_CUT_2) {
 				// cut image 1
 				imageStep = TREE_FALL_IMAGES;
-			} else if (progress < IMapObject.TREE_CUT_3) {
+			} else if (progress < TREE_CUT_3) {
 				// cut image 2
 				imageStep = TREE_FALL_IMAGES + 1;
-			} else if (progress < IMapObject.TREE_TAKEN) {
+			} else if (progress < TREE_TAKEN) {
 				// cut image 3
 				imageStep = TREE_FALL_IMAGES + 2;
 			} else {
 				int relativeStep =
-						(int) ((progress - IMapObject.TREE_TAKEN)
-								/ (1 - IMapObject.TREE_TAKEN) * TREE_ROT_IMAGES);
+						(int) ((progress - TREE_TAKEN)
+								/ (1 - TREE_TAKEN) * TREE_ROT_IMAGES);
 
 				imageStep = relativeStep + TREE_FALL_IMAGES + 3;
 			}
@@ -164,9 +136,9 @@ public class Tree extends GrowingObject implements ISoundable {
 			if (progress < 0.33) {
 				return new DrawableObjectFrame(EDrawableObject.TREE_GROWING_NEW);
 			} else if (progress < 0.66) {
-				return new DrawableObjectFrame(EDrawableObject.TREE_GROWING_SMALL);
+				return new DrawableObjectFrame(EDrawableObject.TREE_ARECACEAE_GROWING_SMALL);
 			} else {
-				return new DrawableObjectFrame(EDrawableObject.TREE_GROWING_MEDIUM);
+				return new DrawableObjectFrame(EDrawableObject.TREE_BIRCH_GROWING_MEDIUM);
 			}
 		}
 		

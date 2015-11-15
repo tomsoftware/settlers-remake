@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.PriorityQueue;
 
 import jsettlers.common.landscape.EResourceType;
+import jsettlers.common.map.object.ETreeTypes;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.mapobject.IAttackableTowerMapObject;
 import jsettlers.common.material.EMaterialType;
@@ -108,7 +109,7 @@ public final class MapObjectsManager implements IScheduledTimerable, Serializabl
 	public boolean executeSearchType(ShortPoint2D pos, ESearchType type) {
 		switch (type) {
 		case PLANTABLE_TREE:
-			return plantTree(new ShortPoint2D(pos.x, pos.y + 1), Tree.ETreeTypes.NOT_DEFINED);
+			return plantTree(new ShortPoint2D(pos.x, pos.y + 1), ETreeTypes.NOT_DEFINED);
 			
 		case CUTTABLE_TREE:
 			return cutTree(pos);
@@ -165,7 +166,7 @@ public final class MapObjectsManager implements IScheduledTimerable, Serializabl
 		}
 	}
 
-	private boolean plantTree(ShortPoint2D pos, Tree.ETreeTypes treeType) {
+	private boolean plantTree(ShortPoint2D pos, ETreeTypes treeType) {
 		Tree tree = new Tree(pos, treeType);
 		addMapObject(pos, tree);
 		schedule(tree, Tree.GROWTH_DURATION, false);
@@ -220,7 +221,7 @@ public final class MapObjectsManager implements IScheduledTimerable, Serializabl
 		short x = pos.x;
 		short y = pos.y;
 		if (grid.isInBounds(x, y)) {
-			AbstractObjectsManagerObject wine = (AbstractObjectsManagerObject) grid.getMapObject(x, y, EMapObjectType.WINE_HARVESTABLE);
+			AbstractObjectsManagerObject wine = (AbstractObjectsManagerObject) grid.getMapObject(x, y, EMapObjectType.WINE_ADULT);
 			if (wine != null && wine.cutOff()) {
 				schedule(wine, Wine.REMOVE_DURATION, true);
 				return true;
@@ -267,7 +268,7 @@ public final class MapObjectsManager implements IScheduledTimerable, Serializabl
 		addMapObject(pos, new DecorationObject(DecoType));
 	}
 	
-	public void plantAdultTree(ShortPoint2D pos, Tree.ETreeTypes treeType) {
+	public void plantAdultTree(ShortPoint2D pos, ETreeTypes treeType) {
 		addMapObject(pos, new AdultTree(pos, treeType));
 	}
 

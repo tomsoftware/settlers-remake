@@ -15,8 +15,11 @@
 package jsettlers.logic.objects.stone;
 
 import jsettlers.common.images.DrawableObjectFrame;
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.position.RelativePoint;
+import jsettlers.graphics.image.Image;
+import jsettlers.graphics.sequence.Sequence;
 import jsettlers.logic.map.grid.objects.AbstractHexMapObject;
 
 /**
@@ -63,7 +66,10 @@ public class Stone extends AbstractHexMapObject {
 	
 	@Override
 	public DrawableObjectFrame getObjectStyle() {
-		return null;
+		
+		int step = (int)MAX_CAPACITY - leftCapacity;
+		
+		return new DrawableObjectFrame(EDrawableObject.RES_STONE, step);
 	}
 	
 	@Override
@@ -76,5 +82,6 @@ public class Stone extends AbstractHexMapObject {
 	public boolean canBeCut() {
 		return leftCapacity > 0;
 	}
+	
 
 }

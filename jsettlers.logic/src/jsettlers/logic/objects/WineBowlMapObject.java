@@ -1,6 +1,7 @@
 package jsettlers.logic.objects;
 
 import jsettlers.common.images.DrawableObjectFrame;
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.logic.constants.Constants;
 import jsettlers.logic.map.grid.objects.AbstractHexMapObject;
@@ -27,7 +28,9 @@ public class WineBowlMapObject extends AbstractHexMapObject {
 	
 	@Override
 	public DrawableObjectFrame getObjectStyle() {
-		return null;
+		int step = (int) (getStateProgress() * (EDrawableObject.WINE_BOWL.firstFrame));
+		
+		return new DrawableObjectFrame(EDrawableObject.WINE_BOWL, step);
 	}
 	
 	@Override

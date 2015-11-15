@@ -23,10 +23,6 @@ import jsettlers.common.images.DrawableObjectFrame;
  * 
  */
 public interface IMapObject {
-	static final float TREE_CUT_1 = 0.03F;
-	static final float TREE_CUT_2 = 0.06F;
-	static final float TREE_CUT_3 = 0.09F;
-	static final float TREE_TAKEN = 0.1F;
 
 	/**
 	 * Gets the type of the object.

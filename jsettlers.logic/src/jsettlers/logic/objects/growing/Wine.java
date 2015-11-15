@@ -14,9 +14,13 @@
  *******************************************************************************/
 package jsettlers.logic.objects.growing;
 
+import jsettlers.common.images.DrawableObjectFrame;
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.landscape.ELandscapeType;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.position.ShortPoint2D;
+import jsettlers.graphics.image.Image;
+import jsettlers.graphics.sequence.Sequence;
 import jsettlers.logic.map.grid.objects.IMapObjectsManagerGrid;
 import jsettlers.logic.map.grid.objects.MapObjectsManager;
 
@@ -59,7 +63,7 @@ public final class Wine extends GrowingObject {
 
 	@Override
 	protected EMapObjectType getAdultState() {
-		return EMapObjectType.WINE_HARVESTABLE;
+		return EMapObjectType.WINE_ADULT;
 	}
 
 	@Override
@@ -76,5 +80,29 @@ public final class Wine extends GrowingObject {
 		grid.setLandscape(x, y, ELandscapeType.GRASS);
 	}
 	
+	
+	@Override
+	public DrawableObjectFrame getObjectStyle() {
+	
+		final int WINE_GROW_STEPS = 3;
+		
+		if (super.getObjectType() == EMapObjectType.WINE_ADULT)
+		{
+			return new DrawableObjectFrame(EDrawableObject.WINE_ADULT);
+		}
+		else if (super.getObjectType() == EMapObjectType.WINE_DEAD)
+		{
+			return new DrawableObjectFrame(EDrawableObject.WINE_DEAD);
+		}
+		else //- WINE_GROWING
+		{
+			float progress = super.getStateProgress();
+			
+			int step = (int) (progress * WINE_GROW_STEPS);
+			
+			return new DrawableObjectFrame(EDrawableObject.WINE_GROWING, step);
+		}
+		
+	}
 
 }

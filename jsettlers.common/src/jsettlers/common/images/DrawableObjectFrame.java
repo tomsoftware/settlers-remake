@@ -14,17 +14,24 @@ public class DrawableObjectFrame {
 		this.soundId = soundId;
 	}
 	
+	public DrawableObjectFrame(EDrawableObject style, int frame) {
+		this.style = style;
+		this.frame = frame;
+		this.doPlayAnimation = false;
+		this.soundId = -1;
+	}
+	
 	public DrawableObjectFrame(EDrawableObject style) {
 		this.style = style;
 		this.frame = style.firstFrame;
 		this.doPlayAnimation = false;
-		this.soundId = 0;
+		this.soundId = -1;
 	}
 	
 	public DrawableObjectFrame(EDrawableObject style, boolean doPlayAnimation) {
 		this.style = style;
 		this.frame = style.firstFrame;
 		this.doPlayAnimation = doPlayAnimation;
-		this.soundId = 0;
+		this.soundId = -1;
 	}
 }

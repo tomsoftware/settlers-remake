@@ -15,9 +15,12 @@
 package jsettlers.logic.objects;
 
 import jsettlers.common.images.DrawableObjectFrame;
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.landscape.EResourceType;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.position.ShortPoint2D;
+import jsettlers.graphics.image.Image;
+import jsettlers.graphics.sequence.Sequence;
 import jsettlers.logic.map.grid.objects.AbstractObjectsManagerObject;
 import jsettlers.network.synchronic.random.RandomSingleton;
 
@@ -50,7 +53,31 @@ public final class RessourceSignMapObject extends AbstractObjectsManagerObject {
 	
 	@Override
 	public DrawableObjectFrame getObjectStyle() {
-		return null;
+		
+		int index = Math.min((int) (amount * 1), 1);
+		
+		switch (getObjectType()) {
+
+			case FOUND_COAL:
+				return new DrawableObjectFrame(EDrawableObject.FOUND_COAL, index);
+		
+			case FOUND_GEMSTONE:
+				return new DrawableObjectFrame(EDrawableObject.FOUND_GEMSTONE, index);
+		
+			case FOUND_GOLD:
+				return new DrawableObjectFrame(EDrawableObject.FOUND_GOLD, index);
+		
+			case FOUND_IRON:
+				return new DrawableObjectFrame(EDrawableObject.FOUND_IRON, index);
+		
+			case FOUND_BRIMSTONE:
+				return new DrawableObjectFrame(EDrawableObject.FOUND_BRIMSTONE, index);
+				
+			default:
+				return new DrawableObjectFrame(EDrawableObject.FOUND_NOTHING);
+		}
+		
+		
 	}
 	
 	@Override

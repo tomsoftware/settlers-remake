@@ -16,21 +16,21 @@ package jsettlers.common.map.object;
 
 public class MapTreeObject implements MapObject {
 
-	private int treeStyle;
+	private ETreeTypes treeStyle;
 	
 	public static MapTreeObject getInstance() {
-		return new MapTreeObject(-1);
+		return new MapTreeObject(ETreeTypes.NOT_DEFINED);
 	}
 	
-	public static MapTreeObject getInstance(/*Tree.ETreeTypes*/ int treeStyle) { //- TODO : Thomas Tree Type to ENUM!
+	public static MapTreeObject getInstance(ETreeTypes treeStyle) {
 		return new MapTreeObject(treeStyle);
 	}
 	
-	public MapTreeObject(/*Tree.ETreeTypes*/ int treeStyle) {
+	public MapTreeObject(ETreeTypes treeStyle) {
 		this.treeStyle = treeStyle;
 	}
 	
-	public int getStyle() {
+	public ETreeTypes getStyle() {
 		
 		return treeStyle;
 	}

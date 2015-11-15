@@ -14,10 +14,14 @@
  *******************************************************************************/
 package jsettlers.logic.objects.growing;
 
+import jsettlers.common.images.DrawableObjectFrame;
+import jsettlers.common.images.EDrawableObject;
 import jsettlers.common.landscape.ELandscapeType;
 import jsettlers.common.map.shapes.HexGridArea;
 import jsettlers.common.mapobject.EMapObjectType;
 import jsettlers.common.position.ShortPoint2D;
+import jsettlers.graphics.image.Image;
+import jsettlers.graphics.sequence.Sequence;
 import jsettlers.logic.map.grid.objects.IMapObjectsManagerGrid;
 import jsettlers.logic.map.grid.objects.MapObjectsManager;
 
@@ -97,4 +101,34 @@ public final class Corn extends GrowingObject {
 		return new HexGridArea(x, y, 0, 1);
 	}
 
+	
+	
+	@Override
+	public DrawableObjectFrame getObjectStyle() {
+	
+		final int CORN_GROW_STEPS = 7;
+	
+		
+		if (super.getObjectType() == EMapObjectType.CORN_ADULT)
+		{
+			return new DrawableObjectFrame(EDrawableObject.CORN_ADULT);
+		}
+		else if (super.getObjectType() == EMapObjectType.CORN_DEAD)
+		{
+			return new DrawableObjectFrame(EDrawableObject.CORN_DEAD);
+		}
+		else //- CORN_GROWING
+		{
+			float progress = super.getStateProgress();
+			
+			int step = (int) (progress * CORN_GROW_STEPS);
+			
+			return new DrawableObjectFrame(EDrawableObject.CORN_GROWING, step);
+		}
+		
+	}
+
+	
+	
+	
 }

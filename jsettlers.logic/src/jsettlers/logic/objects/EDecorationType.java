@@ -1,7 +1,6 @@
 package jsettlers.logic.objects;
 
 import jsettlers.common.images.EDrawableObject;
-import jsettlers.logic.objects.growing.tree.Tree.ETreeTypes;
 
 public enum EDecorationType {
 	NOT_DEFINED(null),

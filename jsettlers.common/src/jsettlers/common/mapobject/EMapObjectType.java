@@ -24,7 +24,7 @@ public enum EMapObjectType {
 	CORN_DEAD,
 
 	WINE_GROWING,
-	WINE_HARVESTABLE,
+	WINE_ADULT,
 	WINE_DEAD,
 	WINE_BOWL,
 

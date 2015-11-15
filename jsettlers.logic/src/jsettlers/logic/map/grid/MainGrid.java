@@ -51,6 +51,7 @@ import jsettlers.common.map.IGraphicsBackgroundListener;
 import jsettlers.common.map.IGraphicsGrid;
 import jsettlers.common.map.IMapData;
 import jsettlers.common.map.object.BuildingObject;
+import jsettlers.common.map.object.ETreeTypes;
 import jsettlers.common.map.object.MapDecorationObject;
 import jsettlers.common.map.object.MapObject;
 import jsettlers.common.map.object.MapStoneObject;
@@ -280,7 +281,7 @@ public final class MainGrid implements Serializable {
 
 		if (object instanceof MapTreeObject) {
 			if (isInBounds(x, y) && movablePathfinderGrid.pathfinderGrid.isTreePlantable(x, y)) {
-				mapObjectsManager.plantAdultTree(pos, Tree.ETreeTypes.fromInt(((MapTreeObject) object).getStyle()));
+				mapObjectsManager.plantAdultTree(pos, ((MapTreeObject)object).getStyle());
 			}
 		} else if (object instanceof MapStoneObject) {
 			mapObjectsManager.addStone(pos, ((MapStoneObject) object).getCapacity());
@@ -489,7 +490,7 @@ public final class MainGrid implements Serializable {
 			case PLANTABLE_WINE:
 				return !isMarked(x, y) && hasSamePlayer(x, y, pathCalculable) && isWinePlantable(x, y);
 			case HARVESTABLE_WINE:
-				return isMapObjectCuttable(x, y, EMapObjectType.WINE_HARVESTABLE) && hasSamePlayer(x, y, pathCalculable) && !isMarked(x, y);
+				return isMapObjectCuttable(x, y, EMapObjectType.WINE_ADULT) && hasSamePlayer(x, y, pathCalculable) && !isMarked(x, y);
 
 			case CUTTABLE_STONE:
 				return y + 1 < height && x - 1 > 0 && isMapObjectCuttable(x - 1, y + 1, EMapObjectType.STONE)
@@ -625,7 +626,7 @@ public final class MainGrid implements Serializable {
 
 		private boolean isWinePlantable(int x, int y) {
 			if (!flagsGrid.isProtected(x, y)
-					&& !objectsGrid.hasMapObjectType(x, y, EMapObjectType.WINE_GROWING, EMapObjectType.WINE_HARVESTABLE, EMapObjectType.WINE_DEAD)
+					&& !objectsGrid.hasMapObjectType(x, y, EMapObjectType.WINE_GROWING, EMapObjectType.WINE_ADULT, EMapObjectType.WINE_DEAD)
 					&& landscapeGrid.areAllNeighborsOf(x, y, 0, 1, ELandscapeType.GRASS, ELandscapeType.EARTH)) {
 
 				EDirection direction = getDirectionOfMaximumHeightDifference(x, y, 2);
@@ -633,9 +634,9 @@ public final class MainGrid implements Serializable {
 					ShortPoint2D inDirPos = direction.getNextHexPoint(x, y);
 					ShortPoint2D invDirPos = direction.getInverseDirection().getNextHexPoint(x, y);
 
-					return !objectsGrid.hasMapObjectType(inDirPos.x, inDirPos.y, EMapObjectType.WINE_GROWING, EMapObjectType.WINE_HARVESTABLE,
+					return !objectsGrid.hasMapObjectType(inDirPos.x, inDirPos.y, EMapObjectType.WINE_GROWING, EMapObjectType.WINE_ADULT,
 							EMapObjectType.WINE_DEAD)
-							&& !objectsGrid.hasMapObjectType(invDirPos.x, invDirPos.y, EMapObjectType.WINE_GROWING, EMapObjectType.WINE_HARVESTABLE,
+							&& !objectsGrid.hasMapObjectType(invDirPos.x, invDirPos.y, EMapObjectType.WINE_GROWING, EMapObjectType.WINE_ADULT,
 									EMapObjectType.WINE_DEAD);
 				}
 			}
